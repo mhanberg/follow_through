@@ -1,0 +1,14 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
+  <p>A productive web framework that<br/>does not compromise speed and maintainability.</p>
+</section>
+
+
+<%= unless logged_in?(@conn) do %>
+  <%= link "Log in with GitHub", to: "/auth/github" %>
+<% else %>
+  <div class="h2"><%= current_user(@conn).name %></div>
+  <img src="<%= current_user(@conn).avatar %>" style="width=auto;height=100px">
+
+  <%= link "Logout", to: "/auth/logout", method: :delete %>
+<% end %>
