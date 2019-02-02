@@ -1,14 +1,11 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>A productive web framework that<br/>does not compromise speed and maintainability.</p>
-</section>
+<div class="container">
+  <div class="w-full rounded-lg bg-white py-8 px-16 shadow">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-4xl font-medium">Follow Throughs</h2>
+
+      <div class="btn-primary">new</div>
+    </div>
 
 
-<%= unless logged_in?(@conn) do %>
-  <%= link "Log in with GitHub", to: "/auth/github" %>
-<% else %>
-  <div class="h2"><%= current_user(@conn).name %></div>
-  <img src="<%= current_user(@conn).avatar %>" style="width=auto;height=100px">
-
-  <%= link "Logout", to: "/auth/logout", method: :delete %>
-<% end %>
+  </div>
+</div>

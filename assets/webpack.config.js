@@ -30,7 +30,18 @@ module.exports = (env, options) => ({
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        exclude: /node_modules/,
+        use: [
+          { loader: 'style-loader', },
+          { loader: MiniCssExtractPlugin.loader },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            }
+          },
+          { loader: 'postcss-loader' }
+        ]
       }
     ]
   },
