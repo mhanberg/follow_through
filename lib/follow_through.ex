@@ -11,6 +11,7 @@ defmodule FollowThrough do
     quote do
       use Ecto.Schema
       import Ecto.Changeset
+      import Ecto.Query
       alias FollowThrough.Repo
     end
   end

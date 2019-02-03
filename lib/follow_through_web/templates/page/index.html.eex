@@ -1,11 +1,18 @@
 <div class="container">
-  <div class="w-full rounded-lg bg-white py-8 px-16 shadow">
+  <div class="card-full">
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-4xl font-medium">Follow Throughs</h2>
 
-      <div class="btn-primary">new</div>
+      <%= link "new", to: Routes.obligation_path(@conn, :new), class: "btn-primary hover:no-underline hover:text-white" %>
     </div>
 
-
+    <div class="ml-4">
+      <div class="font-medium text-lg mb-4"> <%= current_user(@conn).name %> </div>
+      <ul>
+        <%= for obligation <- obligations(@conn) do %>
+          <li> <%= obligation.description %> </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
 </div>

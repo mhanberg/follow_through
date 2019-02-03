@@ -7,6 +7,8 @@ defmodule FollowThrough.User do
     field :name, :string
     field :remember_me_token, :string
 
+    has_many :obligations, FollowThrough.Obligation
+
     timestamps()
   end
 

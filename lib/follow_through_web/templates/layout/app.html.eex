@@ -11,12 +11,12 @@
     <main role="main" class="border-t-7 border-blue-800 bg-grey-200 min-h-screen">
       <header class="container py-4 mb-4">
         <div class="flex items-end justify-between mx-2">
-          <h2 class="font-medium text-4xl">TEAM NAME: FIXME</h2>
+          <h2 class="font-medium text-2xl">TEAM NAME: FIXME</h2>
           <div>
             <%= unless logged_in?(@conn) do %>
-              <%= link "Log in with GitHub", to: "/auth/github", class: "text-2xl" %>
+              <%= link "Log in with GitHub", to: "/auth/github", class: "text-lg" %>
             <% else %>
-              <%= link "Logout", to: "/auth/logout", method: :delete, class: "text-2xl" %>
+              <%= link "Logout", to: "/auth/logout", method: :delete, class: "text-lg" %>
             <% end %>
           </div>
         </div>

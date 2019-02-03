@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="card-2/3 mx-auto">
+    <h2 class="text-4xl font-medium mb-2">Follow Through</h2>
+    <h3 class="text-xl font-normal mb-8">Record a new obligation to your team</h3>
+
+    <%= form_for @obligation, Routes.obligation_path(@conn, :create), fn f -> %>
+      <div class="input-group">
+        <div class="label-group">
+          <%= label f, :description, "Description", class: "required" %>
+          <%= error_tag f, :description %>
+        </div>
+        <%= textarea f, :description, rows: 10, placeholder: "With what do you need help following through?" %>
+      </div>
+
+      <div class="text-right">
+        <%= submit "Keep me on track", class: "btn-primary" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
