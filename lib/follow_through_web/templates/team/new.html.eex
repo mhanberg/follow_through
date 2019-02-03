@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="card-2/3 mx-auto">
+    <h2 class="text-4xl font-medium mb-2">Follow Through</h2>
+    <h3 class="text-xl font-normal mb-8">Record a new obligation to your team</h3>
+
+    <%= form_for @team, Routes.team_path(@conn, :create), fn f -> %>
+      <div class="input-group">
+        <div class="label-group">
+          <%= label f, :name, "Name", class: "required" %>
+          <%= error_tag f, :name %>
+        </div>
+        <%= text_input f, :name, placeholder: "Ex: Seal Team Ricks" %>
+      </div>
+
+      <div class="text-right">
+        <%= submit "create", class: "btn-primary" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

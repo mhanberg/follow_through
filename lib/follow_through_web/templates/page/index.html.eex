@@ -1,23 +1,30 @@
 <div class="container">
-  <div class="card-full">
-    <%= if logged_in?(@conn) do %>
-      <div class="flex justify-between items-center mb-8">
-        <h2 class="text-4xl font-medium">Follow Throughs</h2>
+  <%= if logged_in?(@conn) do %>
+    <div class="flex flex-col sm:flex-row sm:flex-wrap">
+      <%= for team <- teams(@conn) do %>
+        <div class="card-full lg:card-half mx-4 mb-4">
+          <div class="flex justify-between items-center mb-8">
+            <%= link to: Routes.team_path(@conn, :show, team.id) do %>
+              <h2 class="text-4xl font-medium"><%= team.name %></h2>
+            <% end %>
 
-        <%= link "new", to: Routes.obligation_path(@conn, :new), class: "btn-primary hover:no-underline hover:text-white" %>
-      </div>
+            <%= link "new", to: Routes.team_obligation_path(@conn, :new, team.id), class: "btn-primary hover:no-underline hover:text-white" %>
+          </div>
 
-      <div class="ml-4">
-        <div class="font-medium text-lg mb-4"> <%= current_user(@conn).name %> </div>
-        <ul>
-          <%= for obligation <- obligations(@conn) do %>
-            <li> <%= obligation.description %> </li>
-          <% end %>
-        </ul>
-      </div>
-
-    <% else %>
-        Please log in!
-    <% end %>
-  </div>
+          <div class="ml-4">
+            <%= for user <- team.users do %>
+              <div class="font-medium text-lg mb-4"> <%= user.name %> </div>
+              <ul class="mb-4">
+                <%= for obligation <- Enum.filter(user.obligations, & &1.team_id == team.id) do %>
+                  <li> <%= obligation.description  %> </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    Please log in!
+  <% end %>
 </div>

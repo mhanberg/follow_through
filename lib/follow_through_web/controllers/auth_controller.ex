@@ -1,7 +1,6 @@
 defmodule FollowThroughWeb.AuthController do
   use FollowThroughWeb, :controller
   alias FollowThrough.User
-  require IEx;
 
   @moduledoc """
   Auth controller responsible for handling Ueberauth responses
@@ -27,6 +26,7 @@ defmodule FollowThroughWeb.AuthController do
         |> put_flash(:info, "Successfully authenticated.")
         |> put_session(:current_user, user)
         |> redirect(to: "/")
+
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)

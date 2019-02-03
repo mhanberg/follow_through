@@ -5,6 +5,7 @@ defmodule FollowThrough.Obligation do
     field :description, :string
 
     belongs_to :user, FollowThrough.User
+    belongs_to :team, FollowThrough.Team
 
     timestamps()
   end
@@ -12,8 +13,8 @@ defmodule FollowThrough.Obligation do
   @doc false
   def changeset(obligation, attrs \\ %{}) do
     obligation
-    |> cast(attrs, [:description, :user_id])
-    |> validate_required([:description, :user_id])
+    |> cast(attrs, [:description, :user_id, :team_id])
+    |> validate_required([:description, :user_id, :team_id])
   end
 
   def new do
@@ -29,6 +30,6 @@ defmodule FollowThrough.Obligation do
   def for_user(user_id) do
     __MODULE__
     |> where(user_id: ^user_id)
-    |> Repo.all
+    |> Repo.all()
   end
 end

@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="card-full">
+    <div class="flex justify-between items-end mb-8">
+      <h2 class="text-4xl font-medium"><%= @team.name %></h2>
+      <div class="flex flex-col">
+        <div class="text-grey-500 text-sm">Share this link to invite people to your team</div>
+        <div class="text-sm"><%= Routes.team_url(@conn, :join, @team.invite_code) %></div>
+      </div>
+    </div>
+
+    <h4 class="text-xl font-medium">Members</h4>
+
+    <ul>
+      <%= for user <- @team.users do %>
+        <li> <%= user.name %> </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

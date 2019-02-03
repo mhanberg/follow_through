@@ -30,7 +30,11 @@ defmodule FollowThroughWeb.Router do
   scope "/", FollowThroughWeb do
     pipe_through [:browser, :authorize]
 
-    resources "/obligations", ObligationController
+    resources "/teams", TeamController do
+      resources "/obligations", ObligationController
+    end
+
+    get "/join/:invite_code", TeamController, :join
   end
 
   scope "/", FollowThroughWeb do
@@ -44,7 +48,7 @@ defmodule FollowThroughWeb.Router do
       nil ->
         conn
         |> Phoenix.Controller.put_flash(:info, "You must be logged in to continue")
-        |> Phoenix.Controller.redirect(to: "/login")
+        |> Phoenix.Controller.redirect(to: "/")
         |> halt()
 
       _ ->

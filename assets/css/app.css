@@ -3,8 +3,6 @@
 @tailwind preflight;
 @tailwind components;
 
-@import url('https://rsms.me/inter/inter-ui.css');
-
 a {
   @apply text-grey-700 no-underline;
 }
@@ -26,15 +24,25 @@ a:hover {
 }
 
 .flash-danger {
-  @apply border-red bg-red-light;
+  @apply border-red-dark bg-red-lightest text-red-dark;
 }
 
 .btn-primary {
   @apply rounded-lg bg-blue-600 text-white text-xl py-2 px-4 uppercase tracking-wide font-light;
 }
 
-.card-full {
-  @apply w-full rounded-lg bg-white py-8 px-16 shadow;
+@responsive {
+  .card-full {
+    @apply w-full rounded-lg bg-white py-8 px-16 shadow;
+  }
+}
+
+@responsive {
+  .card-half {
+    @apply rounded-lg bg-white py-8 px-12 shadow;
+
+    width: 45%;
+  }
 }
 
 .card-2\/3 {
@@ -74,11 +82,11 @@ input[type=time]:focus {
 }
 
 textarea {
-  @apply appearance-none rounded border-b border-blue-500 bg-grey-200 w-full py-3 px-3 text-grey-500 text-base;
+  @apply appearance-none rounded border-b-2 border-blue-500 bg-grey-200 w-full py-3 px-3 text-grey-500 text-base;
 }
 
 textarea:focus {
-  @apply outline-none text-grey-700;
+  @apply text-grey-700;
 }
 
 @tailwind utilities;

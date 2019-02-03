@@ -7,4 +7,11 @@ defmodule FollowThroughWeb.PageView do
     |> Map.fetch!(:id)
     |> FollowThrough.Obligation.for_user()
   end
+
+  def teams(conn) do
+    conn
+    |> current_user
+    |> FollowThrough.Repo.preload(teams: [users: :obligations])
+    |> Map.fetch!(:teams)
+  end
 end
