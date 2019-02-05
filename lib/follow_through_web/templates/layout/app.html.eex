@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://rsms.me/inter/inter-ui.css"/>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
   </head>
-  <body class="font-sans">
+  <body class="font-sans text-grey-800">
     <main role="main" class="border-t-7 border-blue-800 bg-grey-200 min-h-screen">
       <header class="container py-4 mb-4">
         <div class="flex items-end justify-between mx-2">

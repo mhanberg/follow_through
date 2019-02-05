@@ -36,6 +36,7 @@ defmodule FollowThrough.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
+      {:phoenix_inline_svg, "~> 1.1"},
       {:phoenix, "~> 1.4.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},

@@ -9,7 +9,10 @@ defmodule FollowThrough.Team do
                FollowThrough.User,
                foreign_key: :created_by_id
 
-    many_to_many :users, FollowThrough.User, join_through: FollowThrough.UsersTeams
+    many_to_many :users,
+                 FollowThrough.User,
+                 join_through: FollowThrough.UsersTeams,
+                 on_replace: :delete
 
     timestamps()
   end
@@ -50,6 +53,16 @@ defmodule FollowThrough.Team do
     end
   end
 
+  def delete(id) do
+    with team <- Repo.get(__MODULE__, id),
+         {:ok, team} <- Repo.delete(team) do
+      {:ok, team}
+    else
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
   def join(user, invite_code) do
     case Repo.get_by(Ecto.Query.preload(__MODULE__, :users), invite_code: invite_code) do
       nil ->
@@ -73,10 +86,29 @@ defmodule FollowThrough.Team do
     end
   end
 
+  def remove_member(id, member_id) do
+    with team <-
+           __MODULE__
+           |> Repo.get(id)
+           |> Repo.preload(:users),
+         {:ok, team} <-
+           team
+           |> Ecto.Changeset.change()
+           |> put_assoc(:users, Enum.reject(team.users, &(&1.id == member_id)))
+           |> Repo.update() do
+      {:ok, team}
+    else
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
   def has_member?(%__MODULE__{users: users}, user) do
     users
     |> Enum.any?(&(&1.id == user.id))
   end
+
+  def is_admin?(team, user), do: team.created_by_id == user.id
 
   def generate_invite_code do
     :crypto.strong_rand_bytes(32) |> Base.url_encode64() |> binary_part(0, 32)

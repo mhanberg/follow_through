@@ -32,4 +32,8 @@ defmodule FollowThrough.Obligation do
     |> where(user_id: ^user_id)
     |> Repo.all()
   end
+
+  def for_team(obligations, team_id) do
+    Enum.filter(obligations, & &1.team_id == team_id)
+  end
 end

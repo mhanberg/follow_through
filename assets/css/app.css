@@ -89,4 +89,16 @@ textarea:focus {
   @apply text-grey-700;
 }
 
+.list-item {
+  @apply w-full py-2 px-4 flex justify-between;
+}
+
+.list-item:nth-child(odd) {
+  @apply bg-grey-200;
+}
+
+.list-item:nth-child(even) {
+  @apply bg-white;
+}
+
 @tailwind utilities;

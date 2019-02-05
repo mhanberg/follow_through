@@ -13,12 +13,18 @@
 
           <div class="ml-4">
             <%= for user <- team.users do %>
-              <div class="font-medium text-lg mb-4"> <%= user.name %> </div>
-              <ul class="mb-4">
-                <%= for obligation <- Enum.filter(user.obligations, & &1.team_id == team.id) do %>
-                  <li> <%= obligation.description  %> </li>
+              <div class="mb-4">
+                <div class="font-medium text-lg mb-4"> <%= user.name %> </div>
+                <%= if has_obligations?(user, team.id) do %>
+                  <ul>
+                    <%= for obligation <- FollowThrough.Obligation.for_team(user.obligations, team.id) do %>
+                      <li> <%= obligation.description  %> </li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  <div class="text-grey-400 pl-4">No current obligations</div>
                 <% end %>
-              </ul>
+              </div>
             <% end %>
           </div>
         </div>

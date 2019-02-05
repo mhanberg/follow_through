@@ -4,7 +4,7 @@ defmodule FollowThroughWeb.TeamController do
 
   def show(conn, %{"id" => id}) do
     render(conn, :show,
-      team: Team.get!(id) |> FollowThrough.Repo.preload(:users) |> IO.inspect(label: "team")
+      team: Team.get!(id) |> FollowThrough.Repo.preload(:users)
     )
   end
 
@@ -38,6 +38,20 @@ defmodule FollowThroughWeb.TeamController do
         conn
         |> put_flash(:error, reason)
         |> redirect(to: "/")
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    case Team.delete(id) do
+      {:ok, team} ->
+        conn
+        |> put_flash(:info, "Successfully deleted #{team.name}!")
+        |> redirect(to: "/")
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, "Failed to delete #{changeset.data.name}")
+        |> redirect(to: Routes.team_path(conn, changeset.data.id))
     end
   end
 end

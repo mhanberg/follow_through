@@ -3,7 +3,7 @@ const plugins = [
   require("autoprefixer")
 ];
 
-if (process.env === "production") {
+if (process.env.NODE_ENV === "production") {
   plugins.push(
     require("postcss-purgecss")({
       content: ['../**/*.html.eex']

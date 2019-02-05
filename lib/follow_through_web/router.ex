@@ -32,6 +32,7 @@ defmodule FollowThroughWeb.Router do
 
     resources "/teams", TeamController do
       resources "/obligations", ObligationController
+      resources "/member", TeamMemberController, only: [:delete]
     end
 
     get "/join/:invite_code", TeamController, :join

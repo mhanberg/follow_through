@@ -8,7 +8,9 @@ defmodule FollowThrough.User do
     field :remember_me_token, :string
 
     has_many :obligations, FollowThrough.Obligation
-    many_to_many :teams, FollowThrough.Team, join_through: FollowThrough.UsersTeams
+    many_to_many :teams,
+      FollowThrough.Team,
+      join_through: FollowThrough.UsersTeams
 
     timestamps()
   end
