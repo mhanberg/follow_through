@@ -17,6 +17,9 @@ defmodule FollowThroughWeb.Router do
     plug :logged_in?
   end
 
+  if Mix.env == :dev, do:
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+
   scope "/auth", FollowThroughWeb do
     pipe_through [:authenticate, :browser]
 

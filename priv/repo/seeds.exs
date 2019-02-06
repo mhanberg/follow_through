@@ -26,6 +26,7 @@ Ecto.Adapters.SQL.query!(Repo, "ALTER SEQUENCE teams_id_seq RESTART WITH 1", [])
     Repo.insert!(%User{
       github_uid: :rand.uniform(1000),
       name: name,
+      email: "#{name}@example.com",
       avatar: "123"
     })
 end)

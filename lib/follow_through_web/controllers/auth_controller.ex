@@ -1,6 +1,6 @@
 defmodule FollowThroughWeb.AuthController do
   use FollowThroughWeb, :controller
-  alias FollowThrough.User
+  alias FollowThrough.{User, Mailer, Email}
 
   @moduledoc """
   Auth controller responsible for handling Ueberauth responses
@@ -20,18 +20,26 @@ defmodule FollowThroughWeb.AuthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    require IEx;
-    IEx.pry
     case User.find_or_create(auth) do
-      {:ok, user} ->
+      {{:ok, user}, :new} ->
+        user
+        |> Email.registration_email()
+        |> Mailer.deliver_now
+
+        conn
+        |> put_flash(:info, "Successfully registered!")
+        |> put_session(:current_user, user)
+        |> redirect(to: "/")
+
+      {{:ok, user}, :existing} ->
         conn
         |> put_flash(:info, "Successfully authenticated.")
         |> put_session(:current_user, user)
         |> redirect(to: "/")
 
-      {:error, reason} ->
+      {{:error, _changeset}, :new} ->
         conn
-        |> put_flash(:error, reason)
+        |> put_flash(:error, "Failed to register. Pleaes contact support.")
         |> redirect(to: "/")
     end
   end

@@ -1,0 +1,7 @@
+<%= @user.name %>,
+
+Thank you for registering with Follow Through!
+
+If you ever have any complications or would like to relay any feedback, please send an email to support@followthrough.app.
+
+- Follow Through
