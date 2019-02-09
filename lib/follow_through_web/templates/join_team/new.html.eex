@@ -1,0 +1,14 @@
+<div class="container flex justify-center">
+  <div class="card inline-block">
+    <h1 class="mb-4">Accept Invitation</h1>
+
+    <p class="mb-16 text-lg">
+      You've been invited to join <%= @invitation.team.name %>.
+    </p>
+
+    <div class="text-right">
+      <%= link "cancel", to: "/", class: "cancel-link mr-4" %>
+      <%= link "accept", to: Routes.join_team_path(@conn, :join, @invitation.code), method: :post, class: "btn-primary" %>
+    </div>
+  </div>
+</div>

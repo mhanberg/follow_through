@@ -1,0 +1,7 @@
+<h1>Hey!</h1>
+
+<p>You've been invited to join the team <%= @invitation.team.name %> on Follow Through. Please click the link to accept your invitation.</p>
+
+<%= link "Join", to: Routes.join_team_url(FollowThroughWeb.Endpoint, :new, @invitation.code) %> 
+
+<p>- Follow Through</p>

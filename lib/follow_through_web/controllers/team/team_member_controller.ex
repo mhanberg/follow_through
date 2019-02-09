@@ -7,6 +7,7 @@ defmodule FollowThroughWeb.TeamMemberController do
         conn
         |> put_flash(:info, "Successfully removed team member!")
         |> redirect(to: Routes.team_path(conn, :show, team_id))
+
       {:error, _} ->
         conn
         |> put_flash(:error, "Failed to remove member.")

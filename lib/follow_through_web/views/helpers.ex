@@ -1,4 +1,4 @@
-defmodule FollowThroughWeb.View.Helpers do
+defmodule FollowThroughWeb.Helpers do
   def current_user(conn) do
     Plug.Conn.get_session(conn, :current_user)
   end

@@ -27,8 +27,28 @@ a:hover {
   @apply border-red-dark bg-red-lightest text-red-dark;
 }
 
+.btn-basic {
+  @apply bg-blue-600 text-white uppercase tracking-wide font-light;
+}
+
 .btn-primary {
-  @apply rounded-lg bg-blue-600 text-white text-xl py-2 px-4 uppercase tracking-wide font-light;
+  @apply btn-basic rounded-lg py-2 px-4;
+}
+
+.btn-primary:hover {
+  @apply no-underline text-white;
+}
+
+.cancel-link {
+  @apply text-red uppercase tracking-wide;
+}
+
+.cancel-link:hover {
+  @apply text-red;
+}
+
+.card {
+  @apply rounded-lg bg-white py-8 px-16 shadow;
 }
 
 @responsive {

@@ -8,7 +8,7 @@ defmodule FollowThroughWeb.ObligationController do
 
   def create(conn, %{"team_id" => team_id, "obligation" => params}) do
     case params
-         |> Map.put("user_id", FollowThroughWeb.View.Helpers.current_user(conn).id)
+         |> Map.put("user_id", current_user(conn).id)
          |> Map.put("team_id", team_id)
          |> Obligation.create() do
       {:ok, _obligation} ->

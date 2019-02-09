@@ -17,8 +17,7 @@ defmodule FollowThroughWeb.Router do
     plug :logged_in?
   end
 
-  if Mix.env == :dev, do:
-    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  if Mix.env() == :dev, do: forward("/sent_emails", Bamboo.SentEmailViewerPlug)
 
   scope "/auth", FollowThroughWeb do
     pipe_through [:authenticate, :browser]
@@ -38,7 +37,10 @@ defmodule FollowThroughWeb.Router do
       resources "/member", TeamMemberController, only: [:delete]
     end
 
-    get "/join/:invite_code", TeamController, :join
+    resources "/invitations", InvitationController, only: [:create]
+
+    get "/join/:code", JoinTeamController, :new
+    post "/join/:code", JoinTeamController, :join
   end
 
   scope "/", FollowThroughWeb do
@@ -48,7 +50,7 @@ defmodule FollowThroughWeb.Router do
   end
 
   defp logged_in?(conn, _) do
-    case FollowThroughWeb.View.Helpers.current_user(conn) do
+    case current_user(conn) do
       nil ->
         conn
         |> Phoenix.Controller.put_flash(:info, "You must be logged in to continue")

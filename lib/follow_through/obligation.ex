@@ -34,6 +34,6 @@ defmodule FollowThrough.Obligation do
   end
 
   def for_team(obligations, team_id) do
-    Enum.filter(obligations, & &1.team_id == team_id)
+    Enum.filter(obligations, &(&1.team_id == team_id))
   end
 end

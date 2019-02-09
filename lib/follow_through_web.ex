@@ -23,6 +23,7 @@ defmodule FollowThroughWeb do
 
       import Plug.Conn
       import FollowThroughWeb.Gettext
+      import FollowThroughWeb.Helpers
       alias FollowThroughWeb.Router.Helpers, as: Routes
     end
   end
@@ -41,7 +42,7 @@ defmodule FollowThroughWeb do
       use PhoenixInlineSvg.Helpers, otp_app: :follow_through
 
       import FollowThroughWeb.ErrorHelpers
-      import FollowThroughWeb.View.Helpers
+      import FollowThroughWeb.Helpers
       import FollowThroughWeb.Gettext
       alias FollowThroughWeb.Router.Helpers, as: Routes
     end
@@ -52,6 +53,7 @@ defmodule FollowThroughWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import FollowThroughWeb.Helpers
     end
   end
 

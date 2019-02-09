@@ -24,7 +24,7 @@ defmodule FollowThroughWeb.AuthController do
       {{:ok, user}, :new} ->
         user
         |> Email.registration_email()
-        |> Mailer.deliver_now
+        |> Mailer.deliver_now()
 
         conn
         |> put_flash(:info, "Successfully registered!")
