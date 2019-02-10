@@ -18,7 +18,7 @@ defmodule FollowThroughWeb.ObligationController do
 
       {:error, changeset} ->
         conn
-        |> render(:new, obligation: changeset)
+        |> render(:new, obligation: changeset, team_id: team_id)
     end
   end
 end

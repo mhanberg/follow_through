@@ -4,6 +4,9 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= tag :meta,
+          name: "channel_token",
+          content: Phoenix.Token.sign(@conn, "user salt", current_user(@conn).id) %>
     <title>FollowThrough</title>
     <link rel="stylesheet" href="https://rsms.me/inter/inter-ui.css"/>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>

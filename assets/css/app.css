@@ -121,4 +121,10 @@ textarea:focus {
   @apply bg-white;
 }
 
+.faded {
+  @apply opacity-25;
+
+  transition: all ease 500ms;
+}
+
 @tailwind utilities;

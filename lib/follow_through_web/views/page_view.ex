@@ -1,5 +1,6 @@
 defmodule FollowThroughWeb.PageView do
   use FollowThroughWeb, :view
+  require Ecto.Query
 
   def obligations(conn) do
     conn
@@ -11,7 +12,13 @@ defmodule FollowThroughWeb.PageView do
   def teams(conn) do
     conn
     |> current_user
-    |> FollowThrough.Repo.preload(teams: [users: :obligations])
+    |> FollowThrough.Repo.preload(
+      teams: [
+        users: [
+          obligations: Ecto.Query.from(o in FollowThrough.Obligation, where: o.completed == false)
+        ]
+      ]
+    )
     |> Map.fetch!(:teams)
   end
 

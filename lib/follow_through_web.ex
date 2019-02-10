@@ -39,7 +39,7 @@ defmodule FollowThroughWeb do
 
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
-      use PhoenixInlineSvg.Helpers, otp_app: :follow_through
+      import PhoenixInlineSvg.Helpers
 
       import FollowThroughWeb.ErrorHelpers
       import FollowThroughWeb.Helpers
@@ -61,6 +61,7 @@ defmodule FollowThroughWeb do
     quote do
       use Phoenix.Channel
       import FollowThroughWeb.Gettext
+      import PhoenixInlineSvg.Helpers
     end
   end
 
