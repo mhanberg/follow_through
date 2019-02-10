@@ -14,7 +14,10 @@
         <%= if has_obligations?(user, @team.id) do %>
           <ul class="list-reset">
             <%= for obligation <- FollowThrough.Obligation.for_team(user.obligations, @team.id) do %>
-              <li class="flex" data-controller="checkbox" data-checkbox-id="<%= obligation.id %>">
+              <li class="flex"
+                  data-controller="checkbox"
+                  data-checkbox-id="<%= obligation.id %>"
+                  data-checkbox-is-owner="<%= obligation.user_id == current_user(@conn).id %>">
                 <div class="mr-2 pl-4" data-action="click->checkbox#toggle" data-target="checkbox.checkbox">
                   <%= svg_image(@conn, "checkbox", class: "h-4 w-4 stroke-current text-blue-400") %>
                 </div>
