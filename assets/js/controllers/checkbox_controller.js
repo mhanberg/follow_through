@@ -15,13 +15,7 @@ export default class extends Controller {
         {}
       );
       this.channel
-        .join()
-        .receive("ok", resp => {
-          console.log("Joined successfully", resp);
-        })
-        .receive("error", resp => {
-          console.log("Unable to join", resp);
-        });
+        .join();
 
       this.channel.on("check_event", ({ image }) => {
         this.checkboxTarget.innerHTML = image;
@@ -29,7 +23,7 @@ export default class extends Controller {
     }
   }
 
-  toggle(event) {
+  toggle() {
     if (this.isOwner === "true") {
       this.checked = !this.checked;
       this.channel.push(`check:obligation:${this.obligationId}`, {

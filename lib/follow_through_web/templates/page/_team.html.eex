@@ -12,16 +12,21 @@
       <div class="mb-4">
         <div class="font-medium text-lg mb-4"> <%= user.name %> </div>
         <%= if has_obligations?(user, @team.id) do %>
-          <ul class="list-reset">
+          <ul class="list-reset" data-controller="obligation-list">
             <%= for obligation <- FollowThrough.Obligation.for_team(user.obligations, @team.id) do %>
-              <li class="flex"
+              <li class="flex items-center justify-between py-2 hover:cursor-pointer"
                   data-controller="checkbox"
                   data-checkbox-id="<%= obligation.id %>"
-                  data-checkbox-is-owner="<%= obligation.user_id == current_user(@conn).id %>">
-                <div class="mr-2 pl-4" data-action="click->checkbox#toggle" data-target="checkbox.checkbox">
-                  <%= svg_image(@conn, "checkbox", class: "h-4 w-4 stroke-current text-blue-400") %>
+                  data-checkbox-is-owner="<%= obligation.user_id == current_user(@conn).id %>"
+                  data-target="obligation-list.obligation"
+                  data-action="click->obligation-list#select">
+                <div class="flex items-center">
+                  <div class="mr-2 pl-4" data-action="click->checkbox#toggle" data-target="checkbox.checkbox">
+                    <%= svg_image(@conn, "checkbox", class: "h-4 w-4 stroke-current text-blue-400") %>
+                  </div>
+                  <div> <%= obligation.description %> </div>
                 </div>
-                <div> <%= obligation.description %> </div>
+                <%= delete_obligation_link(@conn, @team, obligation) %>
               </li>
             <% end %>
           </ul>

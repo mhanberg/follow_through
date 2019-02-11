@@ -4,7 +4,8 @@ defmodule FollowThroughWeb.TeamController do
 
   def show(conn, %{"id" => id}) do
     team =
-      Team.get!(id)
+      id
+      |> Team.get!()
       |> Team.with_users()
 
     render(conn, :show,

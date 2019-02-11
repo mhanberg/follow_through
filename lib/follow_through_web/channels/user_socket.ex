@@ -4,9 +4,7 @@ defmodule FollowThroughWeb.UserSocket do
   channel "obligation:*", FollowThroughWeb.ObligationChannel
 
   def connect(%{"token" => token}, socket, _connect_info) do
-    case Phoenix.Token.verify(FollowThroughWeb.Endpoint, "user salt", token,
-           max_age: 86400
-         ) do
+    case Phoenix.Token.verify(FollowThroughWeb.Endpoint, "user salt", token, max_age: 86400) do
       {:ok, verified_user_id} ->
         {:ok, assign(socket, :user_id, verified_user_id)}
 

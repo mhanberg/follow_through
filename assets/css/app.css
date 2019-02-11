@@ -127,4 +127,20 @@ textarea:focus {
   transition: all ease 500ms;
 }
 
+.obligation-selected {
+  @apply bg-blue-100 rounded-lg;
+}
+
+.trash {
+  @apply pr-4 invisible fill-current;
+}
+
+.obligation-selected > .trash:hover {
+  @apply text-red cursor-pointer;
+}
+
+.obligation-selected > .trash {
+  @apply visible;
+}
+
 @tailwind utilities;

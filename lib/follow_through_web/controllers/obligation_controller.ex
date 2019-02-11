@@ -21,4 +21,26 @@ defmodule FollowThroughWeb.ObligationController do
         |> render(:new, obligation: changeset, team_id: team_id)
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    with %Obligation{} = obligation <- Obligation.get(id),
+         true <- obligation.user_id == current_user(conn),
+         {:ok, %Obligation{}} <- Obligation.delete(obligation) do
+      conn
+      |> put_flash(:info, "Successfully deleted an obligation")
+    else
+      false ->
+        conn
+        |> put_flash(:error, "You are not authorized to perform that action")
+
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, "It looks like something went wrong")
+
+      nil ->
+        conn
+        |> put_flash(:error, "It looks like that obligation doesn't exist")
+    end
+    |> redirect(to: "/")
+  end
 end

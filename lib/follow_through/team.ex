@@ -46,7 +46,8 @@ defmodule FollowThrough.Team do
          |> changeset(attrs)
          |> Repo.insert() do
       {:ok, team} ->
-        creator = Repo.get(FollowThrough.User, attrs["created_by_id"]) |> Ecto.Changeset.change()
+        creator =
+          FollowThrough.User |> Repo.get(attrs["created_by_id"]) |> Ecto.Changeset.change()
 
         team
         |> Repo.preload(:users)
