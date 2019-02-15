@@ -41,12 +41,14 @@ defmodule FollowThroughWeb.Router do
 
     get "/join/:code", JoinTeamController, :new
     post "/join/:code", JoinTeamController, :join
+
+    get "/", PageController, :index
   end
 
   scope "/", FollowThroughWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/login", PageController, :login
   end
 
   defp logged_in?(conn, _) do
@@ -54,7 +56,7 @@ defmodule FollowThroughWeb.Router do
       nil ->
         conn
         |> Phoenix.Controller.put_flash(:info, "You must be logged in to continue")
-        |> Phoenix.Controller.redirect(to: "/")
+        |> Phoenix.Controller.redirect(to: "/login")
         |> halt()
 
       _ ->

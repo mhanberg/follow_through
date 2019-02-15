@@ -14,8 +14,7 @@ export default class extends Controller {
         `obligation:${this.obligationId}`,
         {}
       );
-      this.channel
-        .join();
+      this.channel.join();
 
       this.channel.on("check_event", ({ image }) => {
         this.checkboxTarget.innerHTML = image;

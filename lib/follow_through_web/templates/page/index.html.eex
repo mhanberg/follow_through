@@ -1,11 +1,7 @@
 <div class="container">
-  <%= if logged_in?(@conn) do %>
-    <div class="flex flex-col sm:flex-row sm:flex-wrap">
-      <%= for team <- @teams do %>
-        <%= render("_team.html", team: team, conn: @conn) %>
-      <% end %>
-    </div>
-  <% else %>
-    Please log in!
-  <% end %>
+  <div class="flex flex-col sm:flex-row sm:flex-wrap">
+    <%= for team <- @teams do %>
+      <%= render("_team.html", team: team, conn: @conn) %>
+    <% end %>
+  </div>
 </div>
