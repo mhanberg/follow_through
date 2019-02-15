@@ -24,7 +24,12 @@
                   <div class="mr-2 pl-4" data-action="click->checkbox#toggle" data-target="checkbox.checkbox">
                     <%= svg_image(@conn, "checkbox", class: "h-4 w-4 stroke-current text-blue-400") %>
                   </div>
-                  <div> <%= obligation.description %> </div>
+                  <div class="leading-normal">
+                    <%= obligation.description %>
+                    <span class="obligation-timestamp"
+                          data-controller="time-ago"
+                          data-time-ago-time="<%= obligation.inserted_at |> DateTime.from_naive!("Etc/UTC") |> DateTime.to_unix(:millisecond) %>"></span>
+                  </div>
                 </div>
                 <%= delete_obligation_link(@conn, @team, obligation) %>
               </li>

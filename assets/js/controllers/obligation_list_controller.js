@@ -1,4 +1,5 @@
 import { Controller } from "stimulus";
+import Cond from "../utils/conditional-expressions";
 
 export default class extends Controller {
   static targets = ["obligation"];
@@ -14,9 +15,9 @@ export default class extends Controller {
   }
 
   onOutsideClick = ({ target }) => {
-    if (!this.obligationTargets.every(el => el.contains(target))) {
-      this.unselectAll();
-    }
+    Cond.unless(this.obligationTargets.some(el => el.contains(target)), () =>
+      this.unselectAll()
+    );
   };
 
   select(event) {

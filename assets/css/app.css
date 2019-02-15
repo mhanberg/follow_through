@@ -143,4 +143,12 @@ textarea:focus {
   @apply visible;
 }
 
+.obligation-timestamp {
+  @apply ml-2 text-grey-400;
+}
+
+.obligation-selected .obligation-timestamp {
+  @apply text-grey-600;
+}
+
 @tailwind utilities;

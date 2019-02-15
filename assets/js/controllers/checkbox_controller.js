@@ -31,14 +31,14 @@ export default class extends Controller {
       });
 
       if (this.checked === true) {
-        this.element.classList.add("faded");
+        this.element.classList.add("faded", "line-through");
         this.fadeTimeoutId = setTimeout(() => {
           this.element.parentNode.removeChild(this.element);
         }, 2000);
       } else {
         clearTimeout(this.fadeTimeoutId);
         this.fadeTimeoutId = null;
-        this.element.classList.remove("faded");
+        this.element.classList.remove("faded", "line-through");
       }
     }
   }

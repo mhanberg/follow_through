@@ -1,5 +1,6 @@
 defmodule FollowThrough.User do
   use FollowThrough, :schema
+  require Ecto.Query
 
   schema "users" do
     field :github_uid, :integer
@@ -41,6 +42,22 @@ defmodule FollowThrough.User do
         |> Repo.insert()
         |> wrap_as_new()
     end
+  end
+
+  def teams(user) do
+    user
+    |> FollowThrough.Repo.preload(
+      teams: [
+        users: [
+          obligations:
+            Ecto.Query.from(o in FollowThrough.Obligation,
+              where: o.completed == false,
+              order_by: o.inserted_at
+            )
+        ]
+      ]
+    )
+    |> Map.fetch!(:teams)
   end
 
   defp wrap_as_new(insert_result) do

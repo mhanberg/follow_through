@@ -3,5 +3,8 @@
   "extends": ["eslint-config-airbnb-base", "prettier"],
   "env": {
     "browser": true
+  },
+  "rules": {
+    "radix": "off"
   }
 }
