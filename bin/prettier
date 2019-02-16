@@ -3,5 +3,5 @@
 (
 cd assets || return
 
-yarn prettier --list-different js/**/*.js "$@"
+yarn prettier --list-different "js/**/*.js" "$@"
 )

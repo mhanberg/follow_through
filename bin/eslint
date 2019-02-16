@@ -3,5 +3,5 @@
 (
 cd assets || return
 
-yarn eslint js/**/*.js "$@"
+yarn eslint "js/**/*.js" "$@"
 )
