@@ -1,13 +1,16 @@
 import { Socket } from "phoenix";
 
-let socket = new Socket("/socket", {
-  params: {
-    token: document.querySelector("meta[name='channel_token']").content
-  },
-  logger: function(kind, msg, data) {
-    console.log(`${kind}: ${msg}`, data);
-  }
-});
+const channelTokenTag = document.querySelector("meta[name='channel_token']");
+const socket = channelTokenTag
+  ? new Socket("/socket", {
+      params: {
+        token: channelTokenTag.content
+      },
+      logger(kind, msg, data) {
+        console.log(`${kind}: ${msg}`, data);
+      }
+    })
+  : { connect() {} };
 
 socket.connect();
 
