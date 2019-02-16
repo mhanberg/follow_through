@@ -20,6 +20,12 @@ defmodule FollowThroughWeb.Router do
   if Mix.env() == :dev, do: forward("/sent_emails", Bamboo.SentEmailViewerPlug)
 
   scope "/auth", FollowThroughWeb do
+    pipe_through [:browser, :authorize]
+
+    get "/slack/callback", AuthController, :slack
+  end
+
+  scope "/auth", FollowThroughWeb do
     pipe_through [:authenticate, :browser]
 
     get "/:provider", AuthController, :request
@@ -32,6 +38,8 @@ defmodule FollowThroughWeb.Router do
   scope "/", FollowThroughWeb do
     pipe_through [:browser, :authorize]
 
+    get "/", PageController, :index
+
     resources "/teams", TeamController do
       resources "/obligations", ObligationController
       resources "/member", TeamMemberController, only: [:delete]
@@ -41,8 +49,6 @@ defmodule FollowThroughWeb.Router do
 
     get "/join/:code", JoinTeamController, :new
     post "/join/:code", JoinTeamController, :join
-
-    get "/", PageController, :index
   end
 
   scope "/", FollowThroughWeb do
@@ -55,7 +61,7 @@ defmodule FollowThroughWeb.Router do
     case current_user(conn) do
       nil ->
         conn
-        |> Phoenix.Controller.put_flash(:info, "You must be logged in to continue")
+        |> Phoenix.Controller.put_flash(:error, "You must be logged in to continue")
         |> Phoenix.Controller.redirect(to: "/login")
         |> halt()
 
