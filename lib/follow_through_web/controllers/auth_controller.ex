@@ -13,32 +13,6 @@ defmodule FollowThroughWeb.AuthController do
     |> redirect(to: "/")
   end
 
-  def slack(conn, %{"code" => code}) do
-    with {:ok, _resp} <- auth_with_slack(code) do
-      conn
-      |> put_flash(:info, "Successfully added to slack!")
-      |> redirect(to: "/")
-    else
-      {:error, _error} ->
-        conn
-        |> put_flash(:error, "Failed to authenticate with Slack")
-        |> redirect(to: "/")
-    end
-  end
-
-  defp auth_with_slack(code) do
-    HTTPoison.post(
-      "https://slack.com/api/oauth.access",
-      {:form,
-       [
-         client_id: System.get_env("SLACK_CLIENT_ID"),
-         client_secret: System.get_env("SLACK_CLIENT_SECRET"),
-         code: code
-       ]},
-      [{"Content-Type", "application/x-www-form-urlencoded; charset=utf-8"}]
-    )
-  end
-
   def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
     conn
     |> put_flash(:error, "Failed to authenticate.")

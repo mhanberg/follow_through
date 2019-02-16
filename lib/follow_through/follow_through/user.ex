@@ -4,6 +4,7 @@ defmodule FollowThrough.User do
 
   schema "users" do
     field :github_uid, :integer
+    field :slack_id, :string
     field :name, :string
     field :email, :string
     field :avatar, :string
@@ -21,9 +22,15 @@ defmodule FollowThrough.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :avatar, :github_uid, :remember_me_token, :email])
+    |> cast(attrs, [:name, :avatar, :github_uid, :slack_id, :remember_me_token, :email])
     |> validate_required([:name, :avatar, :github_uid, :email])
     |> unique_constraint(:github_uid)
+  end
+
+  def update(user, attrs) do
+    user
+    |> changeset(attrs)
+    |> Repo.update()
   end
 
   def find_or_create(auth) do

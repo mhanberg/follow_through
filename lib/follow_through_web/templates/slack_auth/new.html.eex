@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="flex justify-center">
+    <div class="card mx-auto inline-flex flex-col items-center">
+      <div class="mb-8">
+        <%= svg_image(@conn, "connecting", class: "h-64 w-64") %>
+      </div>
+      <h2 class="flex items-center justify-center mb-8 leading-normal">
+        <span>Connect your <span class="border-b-4 border-red">Slack</span> and <span class="border-b-4 border-blue-400">Follow Through</span> accounts?</span>
+      </h2>
+
+      <%= form_tag Routes.slack_auth_path(@conn, :create), method: :post, class: "flex justify-between items-center w-3/4 md:w-1/2" do %>
+        <%= hidden_input :slack_connect, :slack_id, value: @user_id %>
+        <%= link "Cancel", to:  "/", class: "btn-secondary" %>
+        <%= submit "Connect", class: "btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

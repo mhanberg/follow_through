@@ -36,8 +36,17 @@ a:hover {
 }
 
 .btn-primary:hover {
-  @apply no-underline text-white;
+  @apply no-underline text-white bg-blue-500 shadow-lg;
 }
+
+.btn-secondary {
+  @apply btn-primary bg-grey-400 text-black font-normal;
+}
+
+.btn-secondary:hover {
+  @apply no-underline text-black bg-grey-500 shadow-lg;
+}
+
 
 .cancel-link {
   @apply text-red uppercase tracking-wide;

@@ -3,14 +3,15 @@ defmodule FollowThroughWeb.PageController do
   alias FollowThrough.User
 
   def index(conn, _params) do
-    teams = conn
-    |> current_user
-    |> User.teams()
+    teams =
+      conn
+      |> current_user
+      |> User.teams()
 
     render(conn, "index.html", teams: teams)
   end
 
   def login(conn, _params) do
-    render conn, "login.html"
+    render(conn, "login.html")
   end
 end

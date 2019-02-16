@@ -39,7 +39,7 @@ defmodule FollowThrough.MixProject do
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.0"},
       {:gettext, "~> 0.11"},
-      {:httpoison, "~> 1.5"},
+      {:httpoison, "~> 1.5", override: true},
       {:jason, "~> 1.0"},
       {:phoenix, "~> 1.4.0"},
       {:phoenix_ecto, "~> 4.0"},
@@ -49,6 +49,7 @@ defmodule FollowThrough.MixProject do
       {:phoenix_pubsub, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
+      {:slack, "~> 0.14.0"},
       {:ueberauth_github, "~> 0.7"}
     ]
   end
