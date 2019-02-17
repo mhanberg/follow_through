@@ -24,6 +24,7 @@ defmodule FollowThroughWeb do
       import Plug.Conn
       import FollowThroughWeb.Gettext
       import FollowThroughWeb.Helpers
+      import FollowThroughWeb.ErrorHelpers
       alias FollowThroughWeb.Router.Helpers, as: Routes
     end
   end

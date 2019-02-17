@@ -37,9 +37,16 @@ defmodule FollowThrough.Team do
     Repo.get!(__MODULE__, id)
   end
 
+  @spec get_by(nonempty_list(tuple())) :: %__MODULE__{} | nil
+  def get_by(attrs) do
+    Repo.get_by(__MODULE__, attrs)
+  end
+
+  @spec with_users(%__MODULE__{} | nil) :: %__MODULE__{users: [%FollowThrough.User{}]} | nil
   def with_users(%__MODULE__{} = team) do
     Repo.preload(team, :users)
   end
+  def with_users(nil), do: nil
 
   def create(attrs) do
     case %__MODULE__{}
