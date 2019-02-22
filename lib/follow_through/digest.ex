@@ -1,7 +1,7 @@
 defmodule FollowThrough.Digest do
+  require Logger
   @moduledoc false
   use GenServer
-  import Ecto.Query
 
   def start_link(subscription) do
     GenServer.start_link(__MODULE__, subscription,
@@ -30,22 +30,23 @@ defmodule FollowThrough.Digest do
       )
 
     unless subscription.team.obligations |> Enum.empty?() do
-      Slack.Web.Chat.post_message(
-        subscription.channel_id,
-        "Daily digest for #{subscription.team.name}!",
-        %{
-          attachments:
-            Jason.encode!([
-              %{
-                color: "#026AA7",
-                text:
-                  subscription.team.obligations
-                  |> Enum.reject(& &1.completed)
-                  |> text()
-              }
-            ])
-        }
-      )
+      %{"ok" => true} =
+        Slack.Web.Chat.post_message(
+          subscription.channel_id,
+          "Daily digest for #{subscription.team.name}!",
+          %{
+            attachments:
+              Jason.encode!([
+                %{
+                  color: "#026AA7",
+                  text:
+                    subscription.team.obligations
+                    |> Enum.reject(& &1.completed)
+                    |> text()
+                }
+              ])
+          }
+        )
     end
 
     schedule()
