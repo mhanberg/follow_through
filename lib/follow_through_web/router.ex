@@ -136,6 +136,7 @@ defmodule FollowThroughWeb.Router do
       nil ->
         conn
         |> put_status(200)
+        |> put_view(FollowThroughWeb.SlackView)
         |> render(:login, channel_id: slack_channel_id, user_id: slack_user_id)
         |> halt()
     end
