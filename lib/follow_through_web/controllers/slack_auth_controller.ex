@@ -23,13 +23,17 @@ defmodule FollowThroughWeb.SlackAuthController do
     with {:ok, _resp} <- auth_with_slack(code) do
       conn
       |> put_flash(:info, "Successfully added to slack!")
-      |> redirect(to: "/")
     else
       {:error, _error} ->
         conn
         |> put_flash(:error, "Failed to authenticate with Slack")
-        |> redirect(to: "/")
     end
+    |> redirect(to: "/")
+  end
+
+  def callback(conn, %{"error" => "access_denied"}) do
+    conn
+    |> redirect(to: "/")
   end
 
   defp auth_with_slack(code) do
