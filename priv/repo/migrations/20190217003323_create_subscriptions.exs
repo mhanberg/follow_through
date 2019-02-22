@@ -13,6 +13,6 @@ defmodule FollowThrough.Repo.Migrations.CreateSubscriptions do
       timestamps()
     end
 
-    create(unique_index(:subscriptions, [:channel_id, :service_team_id, :service]))
+    create(unique_index(:subscriptions, [:channel_id, :service_team_id, :service, :team_id]))
   end
 end

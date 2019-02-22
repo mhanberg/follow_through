@@ -13,6 +13,11 @@ defmodule FollowThrough do
       import Ecto.Changeset
       import Ecto.Query
       alias FollowThrough.Repo
+
+      @spec all() :: [%__MODULE__{}]
+      def all() do
+        Repo.all(__MODULE__)
+      end
     end
   end
 

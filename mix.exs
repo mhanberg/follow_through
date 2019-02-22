@@ -50,6 +50,7 @@ defmodule FollowThrough.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
       {:slack, "~> 0.14.0"},
+      {:timex, "~> 3.1"},
       {:ueberauth_github, "~> 0.7"}
     ]
   end

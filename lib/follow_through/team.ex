@@ -14,6 +14,8 @@ defmodule FollowThrough.Team do
                  join_through: FollowThrough.UsersTeams,
                  on_replace: :delete
 
+    has_many :obligations, FollowThrough.Obligation
+
     timestamps()
   end
 
@@ -46,6 +48,7 @@ defmodule FollowThrough.Team do
   def with_users(%__MODULE__{} = team) do
     Repo.preload(team, :users)
   end
+
   def with_users(nil), do: nil
 
   def create(attrs) do

@@ -18,7 +18,7 @@ defmodule FollowThrough.Subscription do
     |> cast(attrs, [:channel_id, :channel_name, :service_team_id, :service, :team_id])
     |> validate_required([:channel_id, :channel_name, :service_team_id, :service, :team_id])
     |> unique_constraint(:team_id,
-      name: "subscriptions_channel_id_service_team_id_service_index",
+      name: "subscriptions_channel_id_service_team_id_service_team_id_index",
       message: "There is already a subscription for that team"
     )
   end

@@ -22,23 +22,12 @@ defmodule FollowThroughWeb.SlackController do
     [teams: teams, template: :list]
   end
 
-  defp parse(["subscribe" | rest], conn, %{
-         "channel_id" => channel_id,
-         "team_id" => slack_team_id,
-         "channel_name" => channel_name
-       }) do
+  defp parse(["subscribe" | rest], conn, params) do
     requested_team = Enum.join(rest, " ")
 
     with %Team{} = team <- Team.get_by(name: requested_team) |> Team.with_users(),
          true <- Team.has_member?(team, current_user(conn)),
-         {:ok, %Subscription{}} <-
-           Subscription.create(%{
-             channel_id: channel_id,
-             channel_name: channel_name,
-             service_team_id: slack_team_id,
-             service: "Slack",
-             team_id: team.id
-           }) do
+         create_sub_and_start_digest(params, team) do
       [template: :subscription, team: team]
     else
       {:error, %Ecto.Changeset{errors: [{_, message}]}} ->
@@ -58,5 +47,27 @@ defmodule FollowThroughWeb.SlackController do
 
   defp parse(_, _, _) do
     [template: :error]
+  end
+
+  defp create_sub_and_start_digest(
+         %{
+           "channel_id" => channel_id,
+           "team_id" => slack_team_id,
+           "channel_name" => channel_name
+         },
+         team
+       ) do
+    FollowThrough.Repo.transaction(fn ->
+      {:ok, %Subscription{} = sub} =
+        Subscription.create(%{
+          channel_id: channel_id,
+          channel_name: channel_name,
+          service_team_id: slack_team_id,
+          service: "Slack",
+          team_id: team.id
+        })
+
+      FollowThrough.DigestSupervisor.start_child(sub)
+    end)
   end
 end
