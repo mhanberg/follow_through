@@ -40,7 +40,7 @@ defmodule FollowThroughWeb.SlackView do
             %{
               "type" => "button",
               "text" => "Connect Follow Through account",
-              "url" => "http://localhost:4000/auth/slack/connect?user_id=#{user_id}",
+              "url" => Routes.slack_auth_url(FollowThroughWeb.Endpoint, :new, user_id: user_id),
               "style" => "primary"
             }
           ]
