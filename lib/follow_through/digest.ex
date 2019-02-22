@@ -73,14 +73,15 @@ defmodule FollowThrough.Digest do
       Timex.now()
       |> case do
         %DateTime{hour: hour} = now when hour < 15 ->
-          struct(now, hour: 15)
+          struct(now, hour: 15, minute: 0, second: 0)
 
         now ->
           now
           |> Timex.add(Timex.Duration.from_days(1))
-          |> struct(hour: 15)
+          |> struct(hour: 15, minute: 0, second: 0)
       end
-      |> Timex.diff(Timex.now(), :seconds)
+      |> Timex.diff(Timex.now(), :milliseconds)
+
 
     Process.send_after(self(), :deliver, delivery_time)
   end
