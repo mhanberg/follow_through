@@ -69,21 +69,19 @@ defmodule FollowThrough.Digest do
   end
 
   defp schedule do
-    # delivery_time =
-    #   Timex.now()
-    #   |> case do
-    #     %DateTime{hour: hour} = now when hour < 13 ->
-    #       struct(now, hour: 13)
+    delivery_time =
+      Timex.now()
+      |> case do
+        %DateTime{hour: hour} = now when hour < 15 ->
+          struct(now, hour: 15)
 
-    #     now ->
-    #       now
-    #       |> Timex.add(Timex.Duration.from_days(1))
-    #       |> struct(hour: 13)
-    #   end
-    #   |> Timex.diff(Timex.now(), :seconds)
+        now ->
+          now
+          |> Timex.add(Timex.Duration.from_days(1))
+          |> struct(hour: 15)
+      end
+      |> Timex.diff(Timex.now(), :seconds)
 
-    # Process.send_after(self(), :deliver, delivery_time)
-
-    Process.send_after(self(), :deliver, 15000)
+    Process.send_after(self(), :deliver, delivery_time)
   end
 end
