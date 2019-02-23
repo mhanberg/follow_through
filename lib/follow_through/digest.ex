@@ -11,7 +11,7 @@ defmodule FollowThrough.Digest do
 
   @impl true
   def init(subscription) do
-    schedule()
+    schedule(subscription.delivery_time)
 
     {:ok, subscription}
   end
@@ -49,7 +49,7 @@ defmodule FollowThrough.Digest do
         )
     end
 
-    schedule()
+    schedule(subscription.delivery_time)
 
     {:noreply, subscription}
   end
@@ -68,20 +68,20 @@ defmodule FollowThrough.Digest do
     |> Enum.join("\n\n")
   end
 
-  defp schedule do
-    delivery_time =
+  defp schedule(delivery_time) do
+    delivery_time_offset =
       Timex.now()
       |> case do
         %DateTime{hour: hour} = now when hour < 15 ->
-          struct(now, hour: 15, minute: 0, second: 0)
+          now
 
         now ->
           now
           |> Timex.add(Timex.Duration.from_days(1))
-          |> struct(hour: 15, minute: 0, second: 0)
       end
+      |> Timex.set(time: delivery_time)
       |> Timex.diff(Timex.now(), :milliseconds)
 
-    Process.send_after(self(), :deliver, delivery_time)
+    Process.send_after(self(), :deliver, delivery_time_offset)
   end
 end

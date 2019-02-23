@@ -6,6 +6,7 @@ defmodule FollowThrough.Subscription do
     field :channel_name, :string
     field :service_team_id, :string
     field :service, :string
+    field :delivery_time, :time
 
     belongs_to :team, FollowThrough.Team
 
@@ -15,8 +16,22 @@ defmodule FollowThrough.Subscription do
   @doc false
   def changeset(subscription, attrs) do
     subscription
-    |> cast(attrs, [:channel_id, :channel_name, :service_team_id, :service, :team_id])
-    |> validate_required([:channel_id, :channel_name, :service_team_id, :service, :team_id])
+    |> cast(attrs, [
+      :channel_id,
+      :channel_name,
+      :service_team_id,
+      :service,
+      :delivery_time,
+      :team_id
+    ])
+    |> validate_required([
+      :channel_id,
+      :channel_name,
+      :service_team_id,
+      :service,
+      :delivery_time,
+      :team_id
+    ])
     |> unique_constraint(:team_id,
       name: "subscriptions_channel_id_service_team_id_service_team_id_index",
       message: "There is already a subscription for that team"
