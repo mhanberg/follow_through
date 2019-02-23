@@ -1,0 +1,7 @@
+<div class="flash-container" data-controller="flash">
+  <%= for {type, message} <- get_flash(@conn) do %>
+    <p class="flash flash-<%= "#{type}" %>" role="alert" data-target="flash.message">
+      <%= message %>
+    </p>
+  <% end %>
+</div>

@@ -11,8 +11,17 @@ a:hover {
   @apply text-blue-500 underline;
 }
 
+.flash-container {
+  @apply flex flex-col flex-1 absolute;
+
+  top: 4rem;
+  right: 5rem;
+}
+
 .flash {
-  @apply max-w-lg mx-auto rounded border flex p-4 mb-8;
+  @apply max-w-sm rounded-r border-l-3 shadow p-4 mb-4 inline-block relative;
+
+  left: 0;
 }
 
 .flash:empty {
@@ -20,11 +29,16 @@ a:hover {
 }
 
 .flash-info {
-  @apply border-blue-500 bg-blue-100 text-blue-700;
+  @apply border-blue-500 bg-blue-000 text-blue-700;
 }
 
-.flash-danger {
+.flash-error {
   @apply border-red-dark bg-red-lightest text-red-dark;
+}
+
+.slide-away {
+  left: 50rem;
+  transition: left ease 1000ms;
 }
 
 .btn-basic {

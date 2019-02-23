@@ -82,7 +82,6 @@ defmodule FollowThrough.Digest do
       end
       |> Timex.diff(Timex.now(), :milliseconds)
 
-
     Process.send_after(self(), :deliver, delivery_time)
   end
 end

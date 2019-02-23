@@ -30,8 +30,7 @@
           </div>
         </div>
       </header>
-      <p class="flash flash-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="flash flash-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= render "_flash.html", conn: @conn %>
       <%= render @view_module, @view_template, assigns %>
     </main>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
