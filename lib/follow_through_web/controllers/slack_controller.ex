@@ -22,12 +22,14 @@ defmodule FollowThroughWeb.SlackController do
     [teams: teams, template: :list]
   end
 
-  defp parse(["subscribe" | rest], conn, params) do
+  defp parse(["subscribe" | rest], conn, %{"user_id" => user_id} = params) do
     requested_team = Enum.join(rest, " ")
 
     with %Team{} = team <- Team.get_by(name: requested_team) |> Team.with_users(),
          true <- Team.has_member?(team, current_user(conn)),
-         create_sub_and_start_digest(params, team) do
+         %{"ok" => true, "user" => %{"tz" => timezone}} <-
+           Slack.Web.Users.info(user_id, %{include_locale: true}),
+         create_sub_and_start_digest(params, team, timezone) do
       [template: :subscription, team: team]
     else
       {:error, %Ecto.Changeset{errors: [{_, message}]}} ->
@@ -55,7 +57,8 @@ defmodule FollowThroughWeb.SlackController do
            "team_id" => slack_team_id,
            "channel_name" => channel_name
          },
-         team
+         team,
+         timezone
        ) do
     FollowThrough.Repo.transaction(fn ->
       {:ok, %Subscription{} = sub} =
@@ -64,7 +67,8 @@ defmodule FollowThroughWeb.SlackController do
           channel_name: channel_name,
           service_team_id: slack_team_id,
           service: "Slack",
-          team_id: team.id
+          team_id: team.id,
+          delivery_time: Subscription.delivery_time_in_utc(timezone)
         })
 
       FollowThrough.DigestSupervisor.start_child(sub)

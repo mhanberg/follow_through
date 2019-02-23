@@ -50,4 +50,13 @@ defmodule FollowThrough.Subscription do
         {:error, error}
     end
   end
+
+  @spec delivery_time_in_utc(String.t()) :: String.t()
+  def delivery_time_in_utc(timezone) do
+    Timex.now(timezone)
+    |> Timex.set(time: ~T[10:00:00])
+    |> Timex.Timezone.convert("Etc/UTC")
+    |> DateTime.to_time()
+    |> Time.to_string()
+  end
 end
