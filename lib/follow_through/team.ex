@@ -70,16 +70,6 @@ defmodule FollowThrough.Team do
     end
   end
 
-  def delete(id) do
-    with team <- Repo.get(__MODULE__, id),
-         {:ok, team} <- Repo.delete(team) do
-      {:ok, team}
-    else
-      {:error, changeset} ->
-        {:error, changeset}
-    end
-  end
-
   def join(user, invite_code) do
     with %Invitation{} = invitation <- Invitation.get_with_team(invite_code, user),
          %__MODULE__{} = team <- with_users(invitation.team),

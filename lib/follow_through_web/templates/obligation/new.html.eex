@@ -3,7 +3,7 @@
     <h2 class="text-4xl font-medium mb-2">Follow Through</h2>
     <h3 class="text-xl font-normal mb-8">Record a new obligation to your team</h3>
 
-    <%= form_for @obligation, Routes.team_obligation_path(@conn, :create, @team_id), fn f -> %>
+    <%= form_for @obligation, Routes.team_obligation_path(@conn, :create, @team_id), [], fn f -> %>
       <div class="input-group">
         <div class="label-group">
           <%= label f, :description, "Description", class: "required" %>
@@ -15,7 +15,6 @@
       <div class="text-right">
         <%= submit "Keep me on track", class: "btn-primary" %>
       </div>
-
     <% end %>
   </div>
 </div>

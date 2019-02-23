@@ -38,6 +38,11 @@ defmodule FollowThrough.Subscription do
     )
   end
 
+  @spec get_by(keyword()) :: %__MODULE__{} | nil
+  def get_by(attrs) do
+    Repo.get_by(__MODULE__, attrs)
+  end
+
   @spec create(map()) :: {:ok, %__MODULE__{}} | {:error, %Ecto.Changeset{}}
   def create(attrs) do
     case %__MODULE__{}

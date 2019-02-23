@@ -37,18 +37,9 @@ defmodule FollowThrough.Obligation do
     |> Repo.get(id)
   end
 
+  @spec delete(%__MODULE__{}) :: {:ok, %__MODULE__{}} | {:error, %Ecto.Changeset{}}
   def delete(%__MODULE__{} = obligation) do
     with {:ok, %__MODULE__{} = obligation} <- Repo.delete(obligation) do
-      {:ok, obligation}
-    else
-      error ->
-        error
-    end
-  end
-
-  def delete(id) when is_binary(id) or is_integer(id) do
-    with %__MODULE__{} = obligation <- get(id),
-         {:ok, %__MODULE__{} = obligation} <- delete(obligation) do
       {:ok, obligation}
     else
       error ->

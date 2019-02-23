@@ -2,7 +2,7 @@
   <div class="card-2/3 mx-auto">
     <h2 class="text-4xl font-medium mb-8">Create a new Team</h2>
 
-    <%= form_for @team, Routes.team_path(@conn, :create), fn f -> %>
+    <%= form_for @team, Routes.team_path(@conn, :create), [], fn f -> %>
       <div class="input-group">
         <div class="label-group">
           <%= label f, :name, "Name", class: "required" %>

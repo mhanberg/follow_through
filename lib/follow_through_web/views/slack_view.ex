@@ -21,7 +21,20 @@ defmodule FollowThroughWeb.SlackView do
         %{
           "color" => "good",
           "title" => "Success!",
-          "text" => "You've successfully subscribed to updates from #{team.name}"
+          "text" => "You've successfully subscribed to updates from #{team.name}."
+        }
+      ]
+    }
+  end
+
+  def render("unsubscribe.json", %{channel_id: channel_id, team: team}) do
+    %{
+      "channel" => channel_id,
+      "attachments" => [
+        %{
+          "color" => "good",
+          "title" => "Success!",
+          "text" => "You've successfully unsubscribed to updates from #{team.name}."
         }
       ]
     }
@@ -35,7 +48,7 @@ defmodule FollowThroughWeb.SlackView do
         %{
           "color" => "#026AA7",
           "fallback" =>
-            "Finish connecting your Follow Through account at http://localhost:4000/auth/slack/connect",
+            "Finish connecting your Follow Through account at #{Routes.slack_auth_url(FollowThroughWeb.Endpoint, :new, user_id: user_id)}",
           "actions" => [
             %{
               "type" => "button",
@@ -62,6 +75,6 @@ defmodule FollowThroughWeb.SlackView do
   end
 
   def render("error.json", assigns) do
-    render("error.json", Map.put(assigns, :error, "Could not understand command"))
+    render("error.json", Map.put(assigns, :error, "Unidentified command."))
   end
 end

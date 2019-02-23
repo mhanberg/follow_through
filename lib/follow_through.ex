@@ -18,6 +18,17 @@ defmodule FollowThrough do
       def all() do
         Repo.all(__MODULE__)
       end
+
+      @spec delete(String.t() | integer()) :: {:ok, %__MODULE__{}} | {:error, %Ecto.Changeset{}}
+      def delete(id) when is_integer(id) or is_binary(id) do
+        with resource <- Repo.get(__MODULE__, id),
+             {:ok, resource} <- Repo.delete(resource) do
+          {:ok, resource}
+        else
+          {:error, changeset} ->
+            {:error, changeset}
+        end
+      end
     end
   end
 

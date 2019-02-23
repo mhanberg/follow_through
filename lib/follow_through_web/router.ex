@@ -82,7 +82,8 @@ defmodule FollowThroughWeb.Router do
     [request_body] = conn.assigns[:raw_body]
 
     timestamp =
-      get_req_header(conn, "x-slack-request-timestamp")
+      conn
+      |> get_req_header("x-slack-request-timestamp")
       |> List.first()
       |> String.to_integer()
 
