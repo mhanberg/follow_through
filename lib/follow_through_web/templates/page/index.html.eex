@@ -1,7 +1,24 @@
 <div class="container">
-  <div class="flex flex-col sm:flex-row sm:flex-wrap">
-    <%= for team <- @teams do %>
-      <%= render("_team.html", team: team, conn: @conn) %>
-    <% end %>
-  </div>
+  <%= unless Enum.empty?(@teams) do %>
+    <div class="flex flex-col sm:flex-row sm:flex-wrap">
+      <%= for team <- @teams do %>
+        <%= render("_team.html", team: team, conn: @conn) %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="flex flex-col-reverse sm:flex-row justify-center mb-4 max-w-xl mx-auto">
+      <div class="flex flex-col text-center sm:text-left justify-center px-4">
+        <h2 class="mb-4">
+          Create a new team
+        </h2>
+        <p class="mb-12">Start following through on obligations you make to your team today.</p>
+        <div>
+          <%= link "Create team", to: Routes.team_path(@conn, :new), class: "btn-primary p-4" %>
+        </div>
+      </div>
+      <div class="text-center">
+        <%= svg_image(@conn, "setup", class: "w-64 sm:w-96 h-64 sm:h-96 mx-8") %>
+      </div>
+    </div>
+  <% end %>
 </div>
