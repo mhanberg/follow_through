@@ -20,7 +20,10 @@
           <% end %>
           <div>
             <%= unless logged_in?(@conn) do %>
-              <%= link "Log in with GitHub", to: "/auth/github", class: "text-lg" %>
+              <%= link to: "/auth/github", class: "btn-primary flex items-center normal-case" do %>
+                <%= svg_image(@conn, "octocat", class: "h-6 w-6 mr-4") %>
+                Sign in with GitHub
+              <% end %>
             <% else %>
               <div class="flex">
                 <%= link "New Team", to: Routes.team_path(@conn, :new), class: "text-lg mr-4" %> 
