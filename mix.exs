@@ -21,7 +21,7 @@ defmodule FollowThrough.MixProject do
   def application do
     [
       mod: {FollowThrough.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :sentry]
     ]
   end
 
@@ -49,6 +49,7 @@ defmodule FollowThrough.MixProject do
       {:phoenix_pubsub, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
+      {:sentry, "~> 6.4"},
       {:slack, "~> 0.14.0"},
       {:timex, "~> 3.1"},
       {:ueberauth_github, "~> 0.7"}

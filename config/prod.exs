@@ -23,3 +23,13 @@ config :follow_through, FollowThrough.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: System.get_env("MAILGUN_API_KEY"),
   domain: "mail.followthrough.app"
+
+config :sentry,
+  dsn: System.get_env("SENTRY_DSN"),
+  environment_name: :prod,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!,
+  tags: %{
+    env: "production"
+  },
+  included_environments: [:prod]
