@@ -1,6 +1,6 @@
 <div class="container">
-  <div class="card-2/3 mx-auto">
-    <h2 class="text-4xl font-medium mb-8">Create a new Team</h2>
+  <div class="card-full sm:card-2/3 mx-auto px-4 sm:px-16">
+    <h2 class="text-xl sm:text-4xl font-medium mb-8">Create a new Team</h2>
 
     <%= form_for @team, Routes.team_path(@conn, :create), [], fn f -> %>
       <div class="input-group">
@@ -14,7 +14,6 @@
       <div class="text-right">
         <%= submit "create", class: "btn-primary" %>
       </div>
-
     <% end %>
   </div>
 </div>

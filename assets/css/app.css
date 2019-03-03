@@ -92,10 +92,10 @@ a:hover {
   .team-card:only-child {
     @apply card-full;
   }
-}
 
-.card-2\/3 {
-  @apply w-2/3 rounded-lg bg-white py-8 px-16 shadow;
+  .card-2\/3 {
+    @apply w-2/3 rounded-lg bg-white py-8 px-16 shadow;
+  }
 }
 
 .input-group {

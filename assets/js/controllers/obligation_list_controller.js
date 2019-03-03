@@ -35,9 +35,7 @@ export default class extends Controller {
   select(event) {
     this.unselectAll();
 
-    event.path
-      .find(e => e.nodeName === "LI")
-      .classList.add("obligation-selected");
+    event.currentTarget.classList.add("obligation-selected");
   }
 
   disconnect() {

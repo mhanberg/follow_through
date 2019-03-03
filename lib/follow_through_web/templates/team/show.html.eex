@@ -1,6 +1,6 @@
 <div class="container">
-  <div class="card-full lg:card-half mx-auto">
-    <h2 class="text-4xl font-medium mb-4"><%= @team.name %></h2>
+  <div class="card-full lg:card-half mx-auto px-4 sm:px-16">
+    <h2 class="text-2xl sm:text-4xl font-medium mb-4"><%= @team.name %></h2>
 
     <div class="border-b border-grey-800 mb-4">
       <h4 class="text-xl font-medium mb-2">Members</h4>
@@ -20,11 +20,11 @@
     <div class="flex flex-col mb-8">
       <div class="text-grey-500 text-sm mb-4">Invite a new member to <%= @team.name %></div>
       <%= form_for @invitation, Routes.invitation_path(@conn, :create), [], fn f -> %>
-        <div class="flex">
-          <%= text_input f, :invited_email, class: "border-t border-l rounded-l-lg", placeholder: "new-member@example.com" %>
+        <div class="flex flex-col sm:flex-row">
+          <%= text_input f, :invited_email, class: "border-t border-l border-r sm:border-r-none mb-2 sm:mb-auto rounded-l-lg rounded-r-lg sm:rounded-r-none", placeholder: "new-member@example.com" %>
           <%= hidden_input f, :team_id, value: @team.id %>
           <%= hidden_input f, :sender_id, value: current_user(@conn).id %>
-          <%= submit "Invite", class: "btn-basic px-8 rounded-r-lg" %>
+          <%= submit "Invite", class: "btn-basic px-8 py-2 rounded-r-lg rounded-l-lg sm:rounded-l-none" %>
         </div>
       <% end %>
     </div>
