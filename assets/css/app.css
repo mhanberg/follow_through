@@ -180,4 +180,35 @@ textarea:focus {
   @apply text-grey-600;
 }
 
+.privacy > h1,
+.privacy > h2,
+.privacy > h3,
+.privacy > h4,
+.privacy > h5,
+.privacy > h6,
+.privacy > p {
+  @apply mb-4;
+}
+
+.privacy > p + h1,
+.privacy > p + h2, 
+.privacy > p + h3, 
+.privacy > p + h4, 
+.privacy > p + h5, 
+.privacy > p + h6,
+.privacy > ul + h1,
+.privacy > ul + h2, 
+.privacy > ul + h3, 
+.privacy > ul + h4, 
+.privacy > ul + h5, 
+.privacy > ul + h6,
+.privacy > ol + h1,
+.privacy > ol + h2, 
+.privacy > ol + h3, 
+.privacy > ol + h4, 
+.privacy > ol + h5, 
+.privacy > ol + h6 {
+  @apply mt-8;
+}
+
 @tailwind utilities;

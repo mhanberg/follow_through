@@ -50,7 +50,7 @@
     </div>
 
     <p class="text-center text-blue-700 pb-8">
-    A project by <%= link "Mitchell Hanberg", to: "https://www.mitchellhanberg.com", class: "text-blue-500 underline" %> 
+    A project by <%= link "Mitchell Hanberg", to: "https://www.mitchellhanberg.com", class: "text-blue-500 underline" %> &middot; <%= link "Privacy Policy", to: Routes.page_path(@conn, :privacy), class: "text-blue-500 underline" %>
     </p>
   </div>
 </div>

@@ -54,7 +54,7 @@ defmodule FollowThroughWeb.TeamController do
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Failed to delete #{changeset.data.name}")
-        |> redirect(to: Routes.team_path(conn, String.to_integer(id)))
+        |> redirect(to: Routes.team_path(conn, :show, id))
     end
   end
 end

@@ -1,9 +1,14 @@
 defmodule FollowThroughWeb.PageController do
   use FollowThroughWeb, :controller
 
-  plug :put_layout, :marketing
-
   def index(conn, _params) do
-    render(conn, "index.html")
+    conn
+    |> put_layout({FollowThroughWeb.LayoutView, "marketing.html"})
+    |> render("index.html")
+  end
+
+  def privacy(conn, _) do
+    conn
+    |> render("privacy.html")
   end
 end
