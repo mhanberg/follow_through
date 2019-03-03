@@ -46,7 +46,7 @@ defmodule FollowThroughWeb.SlackView do
         %{
           "color" => "good",
           "title" => "Success!",
-          "text" => "You've successfully subscribed to updates from #{team.name}."
+          "text" => "You've successfully subscribed to updates from #{team.name}. These will be delivered everyday at 10am."
         }
       ]
     }
