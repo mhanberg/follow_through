@@ -8,6 +8,10 @@ defmodule FollowThrough.Subscription.Slash do
   import FollowThroughWeb.Helpers
   require Logger
 
+  def parse(["help"], _conn, _params) do
+    [template: :help]
+  end
+
   def parse(["list"], conn, _params) do
     teams =
       conn

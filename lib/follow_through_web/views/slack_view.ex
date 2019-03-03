@@ -2,6 +2,28 @@ defmodule FollowThroughWeb.SlackView do
   use FollowThroughWeb, :view
   require Logger
 
+  def render("help.json", %{channel_id: channel_id}) do
+    %{
+      "channel" => channel_id,
+      "blocks" => [
+        %{
+          "type" => "section",
+          "text" => %{
+            "type" => "mrkdwn",
+            "text" => """
+            *Follow Through Slash Commands*
+
+            *help* - Show this help message
+            *list* - Shows your teams
+            *subscribe* [team] - Subscribe to a daily digest for a team.
+            *unsubscribe* [team] - Unsubscribe from a daily digest for a team.
+            """
+          }
+        }
+      ]
+    }
+  end
+
   def render("list.json", %{channel_id: channel_id, teams: teams}) do
     %{
       "channel" => channel_id,
