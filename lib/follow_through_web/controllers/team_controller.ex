@@ -10,7 +10,7 @@ defmodule FollowThroughWeb.TeamController do
       |> current_user
       |> User.teams()
 
-    render(conn, "index.html", teams: teams)
+    render(conn, :index, teams: teams)
   end
 
   def show(conn, %{"id" => id}) do
@@ -54,7 +54,7 @@ defmodule FollowThroughWeb.TeamController do
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Failed to delete #{changeset.data.name}")
-        |> redirect(to: Routes.team_path(conn, changeset.data.id))
+        |> redirect(to: Routes.team_path(conn, String.to_integer(id)))
     end
   end
 end

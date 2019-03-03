@@ -8,7 +8,7 @@
           <%= label f, :name, "Name", class: "required" %>
           <%= error_tag f, :name %>
         </div>
-        <%= text_input f, :name, placeholder: "Ex: Seal Team Ricks" %>
+        <%= text_input f, :name, placeholder: "Your team's name" %>
       </div>
 
       <div class="text-right">
