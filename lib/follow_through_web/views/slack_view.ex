@@ -1,5 +1,6 @@
 defmodule FollowThroughWeb.SlackView do
   use FollowThroughWeb, :view
+  require Logger
 
   def render("list.json", %{channel_id: channel_id, teams: teams}) do
     %{
@@ -15,6 +16,8 @@ defmodule FollowThroughWeb.SlackView do
   end
 
   def render("subscription.json", %{channel_id: channel_id, team: team}) do
+    Logger.debug fn -> "Subscribed to #{inspect channel_id}" end
+
     %{
       "channel" => channel_id,
       "attachments" => [
@@ -28,6 +31,8 @@ defmodule FollowThroughWeb.SlackView do
   end
 
   def render("unsubscribe.json", %{channel_id: channel_id, team: team}) do
+    Logger.debug fn -> "Unsubscribed from #{inspect channel_id}" end
+
     %{
       "channel" => channel_id,
       "attachments" => [
@@ -63,6 +68,8 @@ defmodule FollowThroughWeb.SlackView do
   end
 
   def render("error.json", %{channel_id: channel_id, error: error}) do
+    Logger.debug fn -> "Slack error for channel #{inspect channel_id}: #{inspect error}" end
+
     %{
       "channel" => channel_id,
       "attachments" => [

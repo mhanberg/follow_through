@@ -1,5 +1,6 @@
 defmodule FollowThroughWeb.SlackAuthController do
   use FollowThroughWeb, :controller
+  alias FollowThrough.SlackToken
 
   def new(conn, %{"user_id" => user_id}) do
     conn
@@ -20,7 +21,8 @@ defmodule FollowThroughWeb.SlackAuthController do
   end
 
   def callback(conn, %{"code" => code}) do
-    with {:ok, _resp} <- auth_with_slack(code) do
+    with {:ok, resp} <- auth_with_slack(code),
+         {:ok, %SlackToken{}} <- SlackToken.create(decode_resp(resp)) do
       conn
       |> put_flash(:info, "Successfully added to slack!")
     else
@@ -28,12 +30,20 @@ defmodule FollowThroughWeb.SlackAuthController do
         conn
         |> put_flash(:error, "Failed to authenticate with Slack")
     end
-    |> redirect(to: "/")
+    |> redirect(to: Routes.team_path(conn, :index))
   end
 
   def callback(conn, %{"error" => "access_denied"}) do
     conn
-    |> redirect(to: "/")
+    |> redirect(to: Routes.team_path(conn, :index))
+  end
+
+  defp decode_resp(%HTTPoison.Response{body: body}) do
+    %{"access_token" => access_token, "team_id" => team_id} =
+      body
+      |> Jason.decode!()
+
+    %{token: access_token, workspace_id: team_id}
   end
 
   defp auth_with_slack(code) do

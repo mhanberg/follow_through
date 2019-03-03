@@ -45,20 +45,15 @@ defmodule FollowThrough.Subscription do
 
   @spec create(map()) :: {:ok, %__MODULE__{}} | {:error, %Ecto.Changeset{}}
   def create(attrs) do
-    case %__MODULE__{}
-         |> changeset(attrs)
-         |> Repo.insert() do
-      {:ok, subscription} ->
-        {:ok, subscription}
-
-      {:error, error} ->
-        {:error, error}
-    end
+    %__MODULE__{}
+    |> changeset(attrs)
+    |> Repo.insert()
   end
 
   @spec delivery_time_in_utc(String.t()) :: String.t()
   def delivery_time_in_utc(timezone) do
-    Timex.now(timezone)
+    timezone
+    |> Timex.now()
     |> Timex.set(time: ~T[10:00:00])
     |> Timex.Timezone.convert("Etc/UTC")
     |> DateTime.to_time()

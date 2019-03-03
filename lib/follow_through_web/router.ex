@@ -23,7 +23,7 @@ defmodule FollowThroughWeb.Router do
   end
 
   pipeline :slack do
-    plug :verify_from_slack
+    plug FollowThroughWeb.VerifyFromSlack
     plug :slack_auth
   end
 
@@ -35,6 +35,12 @@ defmodule FollowThroughWeb.Router do
     get "/slack/callback", SlackAuthController, :callback
     get "/slack/connect", SlackAuthController, :new
     post "/slack/connect", SlackAuthController, :create
+  end
+
+  scope "/auth", FollowThroughWeb do
+    pipe_through [:api]
+  
+    post "/slack/events/callback", SlackEventController, :callback
   end
 
   scope "/auth", FollowThroughWeb do
@@ -72,41 +78,6 @@ defmodule FollowThroughWeb.Router do
     pipe_through [:api, :slack]
 
     post "/slack", SlackController, :slash
-  end
-
-  defp verify_from_slack(conn, _) do
-    signing_salt = System.get_env("SLACK_SIGNING_SECRET")
-    [request_body] = conn.assigns[:raw_body]
-
-    timestamp =
-      conn
-      |> get_req_header("x-slack-request-timestamp")
-      |> List.first()
-      |> String.to_integer()
-
-    now =
-      DateTime.utc_now()
-      |> DateTime.to_unix()
-
-    sig_base_string = "v0:#{timestamp}:#{request_body}"
-    [slack_signature] = conn |> get_req_header("x-slack-signature")
-
-    hash =
-      "v0=#{:crypto.hmac(:sha256, signing_salt, sig_base_string) |> Base.encode16(case: :lower)}"
-
-    with true <-
-           now
-           |> Kernel.-(timestamp)
-           |> Kernel.abs()
-           |> Kernel.<(60 * 5),
-         true <- slack_signature == hash do
-      conn
-    else
-      false ->
-        conn
-        |> Phoenix.Controller.put_view(FollowThroughWeb.ErrorView)
-        |> Phoenix.Controller.render("403.json")
-    end
   end
 
   defp logged_in?(conn, _) do

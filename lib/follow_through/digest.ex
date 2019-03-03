@@ -44,7 +44,8 @@ defmodule FollowThrough.Digest do
                     |> Enum.reject(& &1.completed)
                     |> text()
                 }
-              ])
+              ]),
+            token: FollowThrough.SlackToken.get_by_team(subscription.service_team_id).token
           }
         )
     end

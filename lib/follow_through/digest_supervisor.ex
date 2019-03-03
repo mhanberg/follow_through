@@ -13,6 +13,13 @@ defmodule FollowThrough.DigestSupervisor do
     ProcManager.start_child(FollowThrough.Digest, sub)
   end
 
+  @spec terminate_child(integer()) :: :ok | {:error, :not_found}
+  def terminate_child(id) do
+    [{pid, _}] = Registry.lookup(ProcManager.Registry, id)
+
+    ProcManager.terminate_child(pid)
+  end
+
   defp start_digest(sub) do
     Task.start_link(fn -> start_child(sub) end)
   end

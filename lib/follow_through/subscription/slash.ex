@@ -2,8 +2,11 @@ defmodule FollowThrough.Subscription.Slash do
   @moduledoc """
   This module handles parsing slash commands from slack
   """
-  alias FollowThrough.{Subscription, Team}
+  alias FollowThrough.Subscription
+  alias FollowThrough.Team
+  alias FollowThrough.SlackToken
   import FollowThroughWeb.Helpers
+  require Logger
 
   def parse(["list"], conn, _params) do
     teams =
@@ -14,20 +17,23 @@ defmodule FollowThrough.Subscription.Slash do
     [teams: teams, template: :list]
   end
 
-  def parse(["subscribe" | rest], conn, %{"user_id" => user_id} = params) do
+  def parse(["subscribe" | rest], conn, %{"user_id" => user_id, "team_id" => team_id} = params) do
     requested_team = Enum.join(rest, " ")
 
     with %Team{} = team <- Team.get_by(name: requested_team) |> Team.with_users(),
          true <- Team.has_member?(team, current_user(conn)),
+         %SlackToken{token: token} <- SlackToken.get_by_team(team_id),
          %{"ok" => true, "user" => %{"tz" => timezone}} <-
-           Slack.Web.Users.info(user_id, %{include_locale: true}),
+           Slack.Web.Users.info(user_id, %{include_locale: true, token: token}),
          create_sub_and_start_digest(params, team, timezone) do
       [template: :subscription, team: team]
     else
       {:error, %Ecto.Changeset{errors: [{_, message}]}} ->
         [template: :error, error: FollowThroughWeb.ErrorHelpers.translate_error(message)]
 
-      _ ->
+      error ->
+        Logger.debug(fn -> "Error subscribing #{inspect(error)}" end)
+
         error_message =
           if requested_team != "" do
             "Could not subscribe to team #{requested_team}"
@@ -57,7 +63,7 @@ defmodule FollowThrough.Subscription.Slash do
              team_id: team.id,
              service: "Slack"
            ),
-         {:ok, %Subscription{}} <- Subscription.delete(sub.id) do
+         delete_sub_and_terminate_digest(sub.id) do
       [template: :unsubscribe, team: team]
     else
       _ ->
@@ -90,6 +96,14 @@ defmodule FollowThrough.Subscription.Slash do
         })
 
       {:ok, _} = FollowThrough.DigestSupervisor.start_child(sub)
+    end)
+  end
+
+  defp delete_sub_and_terminate_digest(id) do
+    FollowThrough.Repo.transaction(fn ->
+      {:ok, %Subscription{}} = Subscription.delete(id)
+
+      :ok = FollowThrough.DigestSupervisor.terminate_child(id)
     end)
   end
 
