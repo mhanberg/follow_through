@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
   </head>
   <body class="font-sans text-grey-800">
-    <main role="main" class="border-t-7 border-blue-800 bg-grey-200 min-h-screen">
+    <main role="main" class="border-t-7 border-blue-800 bg-grey-200 min-h-screen flex flex-col justify-between">
       <header class="container py-4 mb-4">
         <div class="flex items-center justify-between mx-2">
           <%= link to: Routes.team_path(@conn, :index), class: "flex items-end group text-2xl font-semibold text-blue-700 hover:text-blue-300 hover:no-underline" do %>
@@ -37,7 +37,15 @@
         </div>
       </header>
       <%= render "_flash.html", conn: @conn %>
-      <%= render @view_module, @view_template, assigns %>
+      <div class="flex-1">
+        <%= render @view_module, @view_template, assigns %>
+      </div>
+
+      <p class="text-center text-blue-700 pb-8 leading-normal">
+        A project by <%= link "Mitchell Hanberg", to: "https://www.mitchellhanberg.com", class: "text-blue-500 underline" %>
+        &middot; <%= link "Privacy Policy", to: Routes.page_path(@conn, :privacy), class: "text-blue-500 underline" %>
+        &middot; <%= link "Support", to: "mailto:support@followthrough.app", class: "text-blue-500 underline" %>
+      </p>
     </main>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
