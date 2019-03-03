@@ -37,6 +37,12 @@ defmodule FollowThroughWeb.SlackAuthController do
     |> redirect(to: Routes.team_path(conn, :index))
   end
 
+  def install(conn, _) do
+    conn
+    |> put_status(302)
+    |> redirect(external: "https://slack.com/oauth/authorize?client_id=#{System.get_env("SLACK_CLIENT_ID")}&scope=commands,users:read,chat:write:bot")
+  end
+
   defp decode_resp(%HTTPoison.Response{body: body}) do
     %{"access_token" => access_token, "team_id" => team_id} =
       body

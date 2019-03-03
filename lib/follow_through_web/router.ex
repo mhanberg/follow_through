@@ -73,6 +73,7 @@ defmodule FollowThroughWeb.Router do
 
     get "/", PageController, :index
     get "/privacy", PageController, :privacy
+    get "/slack/install", SlackAuthController, :install
   end
 
   scope "/", FollowThroughWeb do
