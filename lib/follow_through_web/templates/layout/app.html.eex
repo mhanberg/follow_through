@@ -48,5 +48,6 @@
       </p>
     </main>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <%= render "_analytics.html" %>
   </body>
 </html>
