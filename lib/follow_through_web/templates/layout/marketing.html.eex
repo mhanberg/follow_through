@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= if logged_in?(@conn), do: tag :meta,
+          name: "channel_token",
+          content: Phoenix.Token.sign(@conn, "user salt", current_user(@conn).id) %>
+    <%= render "_favicons.html" %>
+    <title>Follow Through</title>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter-ui.css"/>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+  </head>
+  <body class="font-sans text-grey-800">
+    <main role="main" class="min-h-screen">
+      <div class="bg-blue-500">
+        <header class="container pt-4 pb-8">
+          <div class="flex items-center justify-center mx-2">
+            <%= link to: Routes.team_path(@conn, :index), class: "flex items-end text-2xl font-semibold text-white hover:text-white hover:no-underline" do %>
+              <%= svg_image(@conn, "logo", class: "h-8 w-8 stroke-white mr-4") %>
+              <span>Follow Through</span>
+            <% end %>
+            <div class="hidden sm:block">
+              <%= sign_in_button(@conn) %>
+            </div>
+          </div>
+        </header>
+      </div>
+      <%= render "_flash.html", conn: @conn %>
+      <%= render @view_module, @view_template, assigns %>
+      <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    </main>
+  </body>
+</html>

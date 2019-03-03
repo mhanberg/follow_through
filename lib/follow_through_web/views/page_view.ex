@@ -1,23 +1,10 @@
 defmodule FollowThroughWeb.PageView do
   use FollowThroughWeb, :view
 
-  def has_obligations?(user, team_id) do
-    user.obligations
-    |> FollowThrough.Obligation.for_team(team_id)
-    |> Enum.empty?()
-    |> Kernel.!()
-  end
+  def sign_in_button(conn, button_classes \\ "btn-primary bg-white hover:bg-white text-blue-700 hover:text-blue-700 inline-flex items-center normal-case") do
 
-  def delete_obligation_link(conn, team, obligation) do
-    if current_user(conn).id == obligation.user_id do
-      link(
-        svg_image(conn, "trash", class: "h-4 w-4"),
-        to: Routes.team_obligation_path(conn, :delete, team.id, obligation.id),
-        method: :delete,
-        title: "Delete this obligation",
-        class: "trash",
-        data: [confirm: "Are you sure you want to delete this obligation?"]
-      )
+    link to: "/auth/github", class: button_classes do
+      [ svg_image(conn, "octocat", class: "h-6 w-6 mr-4"), "Sign in with GitHub" ]
     end
   end
 end

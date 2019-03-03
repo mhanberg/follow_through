@@ -3,27 +3,38 @@ let defaultConfig = require('tailwindcss/defaultConfig')()
 let colors = {
   'transparent': 'transparent',
 
-  'black': '#000000',
-  'grey-800': '#222222',
-  'grey-700': '#333333',
-  'grey-600': '#676D70',
-  'grey-500': '#838C91',
-  'grey-400': '#D6DADC',
-  'grey-300': '#E2E4E6',
-  'grey-200': '#EDEFF0',
-  'grey-100': '#F8F9F9',
   'white': '#FFFFFF',
+  'grey-100': '#F8F9F9',
+  'grey-200': '#EDEFF0',
+  'grey-300': '#E2E4E6',
+  'grey-400': '#D6DADC',
+  'grey-500': '#838C91',
+  'grey-600': '#676D70',
+  'grey-700': '#333333',
+  'grey-800': '#222222',
+  'black': '#000000',
 
-  'blue-900': '#0C3953',
-  'blue-800': '#094C72',
-  'blue-700': '#055A8C',
-  'blue-600': '#026AA7',
-  'blue-500': '#0079BF',
-  'blue-400': '#298FCA',
-  'blue-300': '#5BA4CF',
-  'blue-200': '#8BBDD9',
-  'blue-100': '#BCD9EA',
   'blue-000': '#E4F0F6',
+  'blue-100': '#BCD9EA',
+  'blue-200': '#8BBDD9',
+  'blue-300': '#5BA4CF',
+  'blue-400': '#298FCA',
+  'blue-500': '#0079BF',
+  'blue-600': '#026AA7',
+  'blue-700': '#055A8C',
+  'blue-800': '#094C72',
+  'blue-900': '#0C3953',
+
+  'green-000': '#E4F0F6',
+  'green-100': '#BCD9EA',
+  'green-200': '#8BBDD9',
+  'green-300': '#5BA4CF',
+  'green-400': '#298FCA',
+  'green-500': '#0079BF',
+  'green-600': '#026AA7',
+  'green-700': '#055A8C',
+  'green-800': '#094C72',
+  'green-900': '#0C3953',
 
   'red-darkest': '#3b0d0c',
   'red-darker': '#621b18',
@@ -385,6 +396,19 @@ module.exports = {
       center: true,
       padding: '1rem',
     }),
+    function({addUtilities, config}) {
+      const utils = Object.entries(config('colors')).reduce((acc, [colorName, colorValue]) => ({
+        ...acc,
+        [`.stroke-${colorName}`]: {
+          stroke: colorValue
+        },
+        [`.fill-${colorName}`]: {
+          fill: colorValue
+        },
+      }), {});
+
+      addUtilities(utils, ['hover', 'group-hover']);
+    },
   ],
 
   options: {

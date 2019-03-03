@@ -1,6 +1,17 @@
 defmodule FollowThroughWeb.TeamController do
   use FollowThroughWeb, :controller
-  alias FollowThrough.{Team, Invitation}
+  alias FollowThrough.Invitation
+  alias FollowThrough.Team
+  alias FollowThrough.User
+
+  def index(conn, _p) do
+    teams =
+      conn
+      |> current_user
+      |> User.teams()
+
+    render(conn, "index.html", teams: teams)
+  end
 
   def show(conn, %{"id" => id}) do
     team =
@@ -25,7 +36,7 @@ defmodule FollowThroughWeb.TeamController do
       {:ok, team} ->
         conn
         |> put_flash(:info, "Successfully created team #{team.name}!")
-        |> redirect(to: "/")
+        |> redirect(to: Routes.team_path(conn, :index))
 
       {:error, changeset} ->
         conn
@@ -38,7 +49,7 @@ defmodule FollowThroughWeb.TeamController do
       {:ok, team} ->
         conn
         |> put_flash(:info, "Successfully deleted #{team.name}!")
-        |> redirect(to: "/")
+        |> redirect(to: Routes.team_path(conn, :index))
 
       {:error, changeset} ->
         conn

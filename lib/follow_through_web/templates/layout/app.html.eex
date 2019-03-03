@@ -7,16 +7,18 @@
     <%= if logged_in?(@conn), do: tag :meta,
           name: "channel_token",
           content: Phoenix.Token.sign(@conn, "user salt", current_user(@conn).id) %>
-    <title>FollowThrough</title>
+    <%= render "_favicons.html" %>
+    <title>Follow Through</title>
     <link rel="stylesheet" href="https://rsms.me/inter/inter-ui.css"/>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
   </head>
   <body class="font-sans text-grey-800">
     <main role="main" class="border-t-7 border-blue-800 bg-grey-200 min-h-screen">
       <header class="container py-4 mb-4">
-        <div class="flex items-end justify-between mx-2">
-          <%= link to: "/" do %>
-            <h2 class="font-medium text-2xl">Follow Through</h2>
+        <div class="flex items-center justify-between mx-2">
+          <%= link to: Routes.team_path(@conn, :index), class: "flex items-end group text-2xl font-semibold text-blue-700 hover:text-blue-300 hover:no-underline" do %>
+            <%= svg_image(@conn, "logo", class: "h-8 w-8 stroke-blue-700 group-hover:stroke-blue-300 sm:mr-4") %>
+            <span class="hidden sm:block">Follow Through</span>
           <% end %>
           <div>
             <%= unless logged_in?(@conn) do %>
@@ -26,8 +28,8 @@
               <% end %>
             <% else %>
               <div class="flex">
-                <%= link "New Team", to: Routes.team_path(@conn, :new), class: "text-lg mr-4" %> 
-                <%= link "Logout", to: "/auth/logout", method: :delete, class: "text-lg" %>
+                <%= link "New Team", to: Routes.team_path(@conn, :new), class: "text-lg mr-4 text-blue-700 hover:text-blue-300" %> 
+                <%= link "Logout", to: "/auth/logout", method: :delete, class: "text-lg text-blue-700 hover:text-blue-300" %>
               </div>
             <% end %>
           </div>

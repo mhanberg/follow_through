@@ -1,6 +1,6 @@
 defmodule FollowThroughWeb.InvitationController do
   use FollowThroughWeb, :controller
-  alias FollowThrough.{Team, Invitation, Mailer, Email}
+  alias FollowThrough.{Invitation, Mailer, Email}
 
   def create(conn, %{"invitation" => params}) do
     with {:ok, invitation} <-

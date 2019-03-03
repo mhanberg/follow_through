@@ -14,7 +14,7 @@ defmodule FollowThroughWeb.ObligationController do
       {:ok, _obligation} ->
         conn
         |> put_flash(:info, "Successfully created a follow through!")
-        |> redirect(to: "/")
+        |> redirect(to: Routes.team_path(conn, :index))
 
       {:error, changeset} ->
         conn
@@ -24,7 +24,7 @@ defmodule FollowThroughWeb.ObligationController do
 
   def delete(conn, %{"id" => id}) do
     with %Obligation{} = obligation <- Obligation.get(id),
-         true <- obligation.user_id == current_user(conn),
+         true <- obligation.user_id == current_user(conn).id,
          {:ok, %Obligation{}} <- Obligation.delete(obligation) do
       conn
       |> put_flash(:info, "Successfully deleted an obligation")
@@ -41,6 +41,6 @@ defmodule FollowThroughWeb.ObligationController do
         conn
         |> put_flash(:error, "It looks like that obligation doesn't exist")
     end
-    |> redirect(to: "/")
+    |> redirect(to: Routes.team_path(conn, :index))
   end
 end

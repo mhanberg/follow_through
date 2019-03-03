@@ -78,13 +78,19 @@ a:hover {
   .card-full {
     @apply w-full rounded-lg bg-white py-8 px-16 shadow;
   }
-}
 
-@responsive {
   .card-half {
     @apply rounded-lg bg-white py-8 px-12 shadow;
 
     width: 45%;
+  }
+
+  .team-card {
+    @apply card-half;
+  }
+
+  .team-card:only-child {
+    @apply card-full;
   }
 }
 

@@ -41,6 +41,6 @@ defmodule FollowThroughWeb.AuthController do
         conn
         |> put_flash(:error, "Failed to register. Pleaes contact support.")
     end
-    |> redirect(to: "/")
+    |> redirect(to: Routes.team_path(conn, :index))
   end
 end

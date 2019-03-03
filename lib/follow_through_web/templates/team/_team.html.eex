@@ -1,4 +1,4 @@
-<div class="card-full lg:card-half mx-4 mb-4">
+<div class="card sm:card-full lg:team-card mx-4 mb-4">
   <div class="flex justify-between items-center mb-8">
     <%= link to: Routes.team_path(@conn, :show, @team.id) do %>
       <h2 class="text-4xl font-medium"><%= @team.name %></h2>

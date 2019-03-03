@@ -1,24 +1,56 @@
-<div class="container">
-  <%= unless Enum.empty?(@teams) do %>
-    <div class="flex flex-col sm:flex-row sm:flex-wrap">
-      <%= for team <- @teams do %>
-        <%= render("_team.html", team: team, conn: @conn) %>
-      <% end %>
+<div class="bg-blue-500">
+  <div class="container pb-8">
+    <p class="text-white font-medium text-3xl text-center mb-8">
+    Never let your team down again.
+    </p>
+
+    <p class="text-white font-thin text-3xl text-center mb-8">
+    Create productive teams with <span class="font-medium"> lightweight task management</span> and <span class="font-medium"> daily reminders</span>.  
+    </p>
+
+    <div class="text-center mb-8">
+      <%= sign_in_button(@conn) %>
     </div>
-  <% else %>
-    <div class="flex flex-col-reverse sm:flex-row justify-center mb-4 max-w-xl mx-auto">
-      <div class="flex flex-col text-center sm:text-left justify-center px-4">
-        <h2 class="mb-4">
-          Create a new team
-        </h2>
-        <p class="mb-12">Start following through on obligations you make to your team today.</p>
-        <div>
-          <%= link "Create team", to: Routes.team_path(@conn, :new), class: "btn-primary p-4" %>
+
+    <div class="text-center">
+      <%= img_tag("images/team-tasks.png") %>
+    </div>
+  </div>
+</div>
+
+<div class="bg-grey-200">
+  <div class="container">
+    <p class="text-blue-700 font-normal text-3xl text-center py-8">
+      How it works
+    </p>
+
+    <div class="flex flex-col sm:flex-row sm:justify-around mb-12">
+      <div class="flex flex-col items-center">
+        <div class="inline-block">
+          <%= svg_image(@conn, "chat-windows", class: "h-48 w-48") %>
         </div>
+        <p class="text-blue-700">Integrate with Slack</p>
       </div>
-      <div class="text-center">
-        <%= svg_image(@conn, "setup", class: "w-64 sm:w-96 h-64 sm:h-96 mx-8") %>
+      <div class="flex flex-col items-center">
+        <div class="inline-block">
+          <%= svg_image(@conn, "alarm", class: "h-48 w-48") %>
+        </div>
+        <p class="text-blue-700">Daily Reminders</p>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="inline-block">
+          <%= svg_image(@conn, "to-do-list", class: "h-48 w-48") %>
+        </div>
+        <p class="text-blue-700">Get things done</p>
       </div>
     </div>
-  <% end %>
+
+    <div class="text-center pb-16">
+      <%= sign_in_button(@conn, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
+    </div>
+
+    <p class="text-center text-blue-700 pb-8">
+    A project by <%= link "Mitchell Hanberg", to: "https://www.mitchellhanberg.com", class: "text-blue-500 underline" %> 
+    </p>
+  </div>
 </div>

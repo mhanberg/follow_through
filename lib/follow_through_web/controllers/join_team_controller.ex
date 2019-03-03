@@ -10,7 +10,7 @@ defmodule FollowThroughWeb.JoinTeamController do
       nil ->
         conn
         |> put_flash(:error, "This invite link has expired or is invalid")
-        |> redirect(to: "/")
+        |> redirect(to: Routes.team_path(conn, :index))
     end
   end
 
@@ -19,12 +19,11 @@ defmodule FollowThroughWeb.JoinTeamController do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Successfully joined a team!")
-        |> redirect(to: "/")
 
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)
-        |> redirect(to: "/")
     end
+    |> redirect(to: Routes.team_path(conn, :index))
   end
 end

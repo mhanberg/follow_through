@@ -50,7 +50,6 @@ defmodule FollowThroughWeb.Router do
   scope "/", FollowThroughWeb do
     pipe_through [:browser, :authorize]
 
-    get "/", PageController, :index
 
     resources "/teams", TeamController do
       resources "/obligations", ObligationController
@@ -66,7 +65,7 @@ defmodule FollowThroughWeb.Router do
   scope "/", FollowThroughWeb do
     pipe_through :browser
 
-    get "/login", PageController, :login
+    get "/", PageController, :index
   end
 
   scope "/", FollowThroughWeb do
@@ -76,8 +75,6 @@ defmodule FollowThroughWeb.Router do
   end
 
   defp verify_from_slack(conn, _) do
-    require IEx
-
     signing_salt = System.get_env("SLACK_SIGNING_SECRET")
     [request_body] = conn.assigns[:raw_body]
 
@@ -116,8 +113,7 @@ defmodule FollowThroughWeb.Router do
     case current_user(conn) do
       nil ->
         conn
-        |> Phoenix.Controller.put_flash(:error, "You must be logged in to continue")
-        |> Phoenix.Controller.redirect(to: "/login")
+        |> Phoenix.Controller.redirect(to: "/")
         |> halt()
 
       _ ->

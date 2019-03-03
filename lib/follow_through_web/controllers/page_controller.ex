@@ -1,17 +1,9 @@
 defmodule FollowThroughWeb.PageController do
   use FollowThroughWeb, :controller
-  alias FollowThrough.User
+
+  plug :put_layout, :marketing
 
   def index(conn, _params) do
-    teams =
-      conn
-      |> current_user
-      |> User.teams()
-
-    render(conn, "index.html", teams: teams)
-  end
-
-  def login(conn, _params) do
-    render(conn, "login.html")
+    render(conn, "index.html")
   end
 end
