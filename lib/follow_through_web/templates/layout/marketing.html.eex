@@ -21,7 +21,7 @@
               <%= svg_image(@conn, "logo", class: "h-8 w-8 stroke-white mr-4") %>
               <span>Follow Through</span>
             <% end %>
-            <div class="hidden sm:block">
+            <div class="hidden sm:flex sm:items-center">
               <%= sign_in_button(@conn) %>
             </div>
           </div>
