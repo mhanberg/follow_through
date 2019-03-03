@@ -10,6 +10,8 @@ defmodule FollowThrough.Application do
       FollowThrough.DigestSupervisor
     ]
 
+    {:ok, _} = Logger.add_backend(Sentry.LoggerBackend)
+
     Supervisor.start_link(children, strategy: :one_for_one, name: FollowThrough.Supervisor)
   end
 
