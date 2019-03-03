@@ -11,13 +11,12 @@ defmodule FollowThroughWeb.SlackAuthController do
     with {:ok, _user} <- FollowThrough.User.update(current_user(conn), params) do
       conn
       |> put_flash(:info, "Successfully connected your Slack account")
-      |> redirect(to: "/")
     else
       {:error, _changeset} ->
         conn
         |> put_flash(:error, "Something went wrong, please contact support")
-        |> redirect(to: "/")
     end
+    |> redirect(to: Routes.team_path(conn, :index))
   end
 
   def callback(conn, %{"code" => code}) do
