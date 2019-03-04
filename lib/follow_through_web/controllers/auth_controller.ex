@@ -6,6 +6,29 @@ defmodule FollowThroughWeb.AuthController do
   Auth controller responsible for handling Ueberauth responses
   """
 
+  def new(conn, params) do
+    conn
+    |> render(:new, user: User.new(params))
+  end
+
+  def create(conn, %{"user" => user}) do
+    case  %User{} |> User.changeset(user) |> FollowThrough.Repo.insert() do
+      {:ok, %User{} = user} ->
+        user
+        |> Email.registration_email()
+        |> Mailer.deliver_now()
+
+        conn
+        |> put_flash(:info, "Successfully registered!")
+        |> put_session(:current_user, user)
+        |> redirect(to: Routes.team_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> render(:new, user: changeset)
+    end
+  end
+
   def delete(conn, _) do
     conn
     |> delete_session(:current_user)
@@ -20,27 +43,41 @@ defmodule FollowThroughWeb.AuthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    auth
-    |> User.find_or_create()
-    |> case do
-      {{:ok, user}, :new} ->
-        user
-        |> Email.registration_email()
-        |> Mailer.deliver_now()
-
+    case Regex.match?(~r/users\.noreply\.github\.com/, auth.info.email) do
+      true ->
         conn
-        |> put_flash(:info, "Successfully registered!")
-        |> put_session(:current_user, user)
+        |> redirect(
+          to:
+            Routes.auth_path(conn, :new,
+              uid: auth.uid,
+              name: auth.info.name,
+              image: auth.info.image
+            )
+        )
 
-      {{:ok, user}, :existing} ->
-        conn
-        |> put_flash(:info, "Successfully authenticated.")
-        |> put_session(:current_user, user)
+      _ ->
+        auth
+        |> User.find_or_create()
+        |> case do
+          {{:ok, user}, :new} ->
+            user
+            |> Email.registration_email()
+            |> Mailer.deliver_now()
 
-      {{:error, _changeset}, :new} ->
-        conn
-        |> put_flash(:error, "Failed to register. Pleaes contact support.")
+            conn
+            |> put_flash(:info, "Successfully registered!")
+            |> put_session(:current_user, user)
+
+          {{:ok, user}, :existing} ->
+            conn
+            |> put_flash(:info, "Successfully authenticated.")
+            |> put_session(:current_user, user)
+
+          {{:error, _changeset}, :new} ->
+            conn
+            |> put_flash(:error, "Failed to register. Please contact support.")
+        end
+        |> redirect(to: Routes.team_path(conn, :index))
     end
-    |> redirect(to: Routes.team_path(conn, :index))
   end
 end

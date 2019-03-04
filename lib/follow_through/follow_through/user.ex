@@ -27,6 +27,15 @@ defmodule FollowThrough.User do
     |> unique_constraint(:github_uid)
   end
 
+  def new(auth) do
+    %__MODULE__{}
+    |> changeset(%{
+      github_uid: auth["uid"],
+      name: auth["name"],
+      avatar: auth["image"]
+    })
+  end
+
   def update(user, attrs) do
     user
     |> changeset(attrs)

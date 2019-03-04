@@ -52,7 +52,7 @@ defmodule FollowThrough.MixProject do
       {:sentry, "~> 7.0"},
       {:slack, "~> 0.14.0"},
       {:timex, "~> 3.1"},
-      {:ueberauth_github, "~> 0.7"}
+      {:ueberauth_github, git: "https://github.com/ueberauth/ueberauth_github.git"}
     ]
   end
 

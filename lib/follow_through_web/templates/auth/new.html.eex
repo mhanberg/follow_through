@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="card-full sm:card-2/3 mx-auto px-4 sm:px-16">
+    <h2 class="mb-8 leading-normal">Please provide an email address to finish registering your account.</h2>
+    <%= form_for @user, Routes.auth_path(@conn, :create), [], fn f -> %>
+      <div class="input-group">
+        <div class="label-group">
+          <%= label f, :email, "Email", class: "required" %>
+          <%= error_tag f, :email %>
+        </div>
+        <%= text_input f, :email, placeholder: "Your email" %>
+      </div>
+
+      <%= hidden_input f, :avatar %>
+      <%= hidden_input f, :github_uid %>
+      <%= hidden_input f, :name %>
+
+      <div class="text-right">
+        <%= submit "finish", class: "btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
