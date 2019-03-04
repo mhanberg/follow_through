@@ -1,6 +1,8 @@
 defmodule FollowThroughWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :follow_through
-  use Sentry.Phoenix.Endpoint
+  if Mix.env() == :prod do
+    use Sentry.Phoenix.Endpoint
+  end
 
   socket "/socket", FollowThroughWeb.UserSocket,
     websocket: [timeout: 45_000],

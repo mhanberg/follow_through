@@ -1,8 +1,10 @@
 defmodule FollowThroughWeb.Router do
   use FollowThroughWeb, :router
 
-  use Plug.ErrorHandler
-  use Sentry.Plug
+  if Mix.env() == :prod do
+    use Plug.ErrorHandler
+    use Sentry.Plug
+  end
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -44,6 +46,12 @@ defmodule FollowThroughWeb.Router do
     pipe_through [:api]
   
     post "/slack/events/callback", SlackEventController, :callback
+  end
+
+  scope "/auth", FollowThroughWeb do
+    pipe_through [:browser]
+
+    resources "/", AuthController, only: [:new, :create]
   end
 
   scope "/auth", FollowThroughWeb do
