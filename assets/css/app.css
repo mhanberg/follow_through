@@ -180,6 +180,41 @@ textarea:focus {
   @apply text-grey-600;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 4rem;
+}
+
+.grid-label {
+  justify-self: center;
+  align-self: center;
+}
+
+.grid-item {
+  justify-self: center;
+  align-self: center;
+}
+
+@screen sm {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 4rem;
+    grid-column-gap: 4rem;
+  }
+
+  .grid-label {
+    justify-self: end;
+    align-self: center;
+  }
+
+  .grid-item {
+    justify-self: start;
+    align-self: center;
+  }
+}
+
 .privacy > h1,
 .privacy > h2,
 .privacy > h3,

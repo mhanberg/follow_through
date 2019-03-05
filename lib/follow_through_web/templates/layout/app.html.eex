@@ -29,7 +29,6 @@
             <% else %>
               <div class="flex items-center">
                 <%= link "New Team", to: Routes.team_path(@conn, :new), class: "text-lg mr-4 text-blue-700 hover:text-blue-300" %>
-                <%= link "Add to Slack", to: "https://slack.com/oauth/authorize?client_id=#{System.get_env("SLACK_CLIENT_ID")}&scope=commands,users:read,chat:write:bot", class: "text-lg mr-4 text-blue-700 hover:text-blue-300" %>
                 <%= link "Logout", to: "/auth/logout", method: :delete, class: "text-lg text-blue-700 hover:text-blue-300" %>
               </div>
             <% end %>
