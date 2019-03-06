@@ -8,7 +8,8 @@ defmodule FollowThroughWeb.SlackAuthController do
   end
 
   def create(conn, %{"slack_connect" => params}) do
-    with {:ok, _user} <- FollowThrough.User.update(current_user(conn), params) do
+    with {:ok, _slack_connection} <-
+           FollowThrough.SlackConnection.create(Map.put(params, "user_id", current_user(conn).id)) do
       conn
       |> put_flash(:info, "Successfully connected your Slack account")
     else
@@ -40,7 +41,10 @@ defmodule FollowThroughWeb.SlackAuthController do
   def install(conn, _) do
     conn
     |> put_status(302)
-    |> redirect(external: "https://slack.com/oauth/authorize?client_id=#{System.get_env("SLACK_CLIENT_ID")}&scope=commands,users:read,chat:write:bot")
+    |> redirect(
+      external:
+        "https://slack.com/oauth/authorize?client_id=#{System.get_env("SLACK_CLIENT_ID")}&scope=commands,users:read,chat:write:bot"
+    )
   end
 
   defp decode_resp(%HTTPoison.Response{body: body}) do

@@ -44,7 +44,7 @@ defmodule FollowThroughWeb.Router do
 
   scope "/auth", FollowThroughWeb do
     pipe_through [:api]
-  
+
     post "/slack/events/callback", SlackEventController, :callback
   end
 
@@ -66,7 +66,6 @@ defmodule FollowThroughWeb.Router do
 
   scope "/", FollowThroughWeb do
     pipe_through [:browser, :authorize]
-
 
     resources "/teams", TeamController do
       resources "/obligations", ObligationController
@@ -109,8 +108,9 @@ defmodule FollowThroughWeb.Router do
     slack_user_id = conn.params["user_id"]
     slack_channel_id = conn.params["channel_id"]
 
-    case FollowThrough.Repo.get_by(FollowThrough.User, slack_id: slack_user_id) do
-      %FollowThrough.User{} = user ->
+    case FollowThrough.Repo.get_by(FollowThrough.SlackConnection, slack_id: slack_user_id)
+         |> FollowThrough.Repo.preload(:user) do
+      %FollowThrough.SlackConnection{user: user} ->
         conn
         |> put_session(:current_user, user)
 
