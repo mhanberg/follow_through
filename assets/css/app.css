@@ -131,11 +131,11 @@ input[type=time]:focus {
 }
 
 textarea {
-  @apply appearance-none rounded border-b-2 border-blue-500 bg-grey-200 w-full py-3 px-3 text-grey-500 text-base;
+  @apply appearance-none rounded border-b border-grey-700 w-full py-3 px-3 text-grey-500 text-base;
 }
 
 textarea:focus {
-  @apply text-grey-700;
+  @apply text-grey-700 border-blue-500 bg-grey-200 outline-none;
 }
 
 .list-item {
@@ -178,6 +178,20 @@ textarea:focus {
 
 .obligation-selected .obligation-timestamp {
   @apply text-grey-600;
+}
+
+.feedback {
+  @apply fixed cursor-pointer;
+
+  bottom: 3rem;
+  right: 3rem;
+}
+
+.feedback-window {
+  @apply fixed border-t-3 border-blue-500 bg-white px-4 py-2 shadow;
+
+  bottom: 6rem;
+  right: 6rem;
 }
 
 .grid {

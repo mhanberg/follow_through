@@ -25,6 +25,7 @@ defmodule FollowThroughWeb.Router do
 
   pipeline :authorize do
     plug :logged_in?
+    plug :put_feedback
   end
 
   pipeline :slack do
@@ -73,6 +74,7 @@ defmodule FollowThroughWeb.Router do
     end
 
     resources "/invitations", InvitationController, only: [:create]
+    resources "/feedback", FeedbackController, only: [:create]
 
     get "/join/:code", JoinTeamController, :new
     post "/join/:code", JoinTeamController, :join
@@ -121,5 +123,16 @@ defmodule FollowThroughWeb.Router do
         |> render(:login, channel_id: slack_channel_id, user_id: slack_user_id)
         |> halt()
     end
+  end
+
+  defp put_feedback(conn, _) do
+    user = current_user(conn)
+
+    conn
+    |> assign(
+      :feedback,
+      %FollowThrough.Feedback{}
+      |> FollowThrough.Feedback.changeset()
+    )
   end
 end
