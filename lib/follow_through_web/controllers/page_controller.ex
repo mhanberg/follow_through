@@ -9,6 +9,7 @@ defmodule FollowThroughWeb.PageController do
 
   def privacy(conn, _) do
     conn
+    |> put_layout({FollowThroughWeb.LayoutView, "marketing.html"})
     |> render("privacy.html")
   end
 end

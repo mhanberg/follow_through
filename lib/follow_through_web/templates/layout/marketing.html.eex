@@ -31,6 +31,11 @@
       <%= render @view_module, @view_template, assigns %>
       <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
       <%= render "_analytics.html" %>
+      <p class="text-center text-blue-700 pb-8 leading-normal">
+        A project by <%= link "Mitchell Hanberg", to: "https://www.mitchellhanberg.com", class: "text-blue-500 underline" %>
+        &middot; <%= link "Privacy Policy", to: Routes.page_path(@conn, :privacy), class: "text-blue-500 underline" %>
+        &middot; <%= link "Support", to: "mailto:support@followthrough.app", class: "text-blue-500 underline" %>
+      </p>
     </main>
   </body>
 </html>
