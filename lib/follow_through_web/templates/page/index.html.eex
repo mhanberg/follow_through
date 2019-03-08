@@ -57,8 +57,13 @@
     Integration with Slack
     </p>
     <div class="grid mb-16">
+      <p class="text-blue-900 text-right text-lg grid-label">Create your team in Follow Through</p>
+      <div class="grid-item">
+        <%= sign_in_button(@conn, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
+      </div>
+
       <p class="text-blue-900 text-right text-lg grid-label">Install our app</p>
-      <a class="inline-block grid-item" style="height: 40px" href="https://slack.com/oauth/authorize?client_id=213454958182.565838794162&scope=commands,users:read,chat:write:bot"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
+      <a class="inline-block grid-item hover:shadow-lg" style="height: 40px" href="https://slack.com/oauth/authorize?client_id=213454958182.565838794162&scope=commands,users:read,chat:write:bot"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 
       <p class="text-blue-900 text-right text-lg grid-label">Use our slash command</p>
       <div class="max-w-xs rounded border border-grey-600 text-grey-600 bg-white py-2 px-4 text-sm grid-item">/followthrough subscribe Management</div>
@@ -67,10 +72,6 @@
       <div class="sm:bg-white sm:p-4 grid-item rounded-lg">
         <%= img_tag "images/team-digests.png", class: "w-96" %>
       </div>
-    </div>
-
-    <div class="flex justify-center mb-16">
-      <%= sign_in_button(@conn, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
     </div>
   </div>
 
