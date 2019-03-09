@@ -5,9 +5,9 @@ defmodule FollowThroughWeb.ObligationChannel do
   def join(
         "obligation:" <> obligation_id,
         _params,
-        %Phoenix.Socket{assigns: %{user_id: user_id}} = socket
+        %Phoenix.Socket{assigns: %{current_user: current_user}} = socket
       ) do
-    if FollowThrough.Obligation.belongs_to_user?(obligation_id, user_id) do
+    if FollowThrough.Obligation.belongs_to_user?(obligation_id, current_user.id) do
       {:ok, socket}
     else
       {:error, "The user is not authorized to connect to this channel"}

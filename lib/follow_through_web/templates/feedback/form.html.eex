@@ -1,0 +1,20 @@
+<%= form_for @feedback, Routes.feedback_path(@conn, :create), [data: [target: "feedback.form"]], fn f -> %>
+  <div class="hide-if-empty mb-4 text-<%= @message[:status] %>">
+    <%= @message[:message] %>
+  </div>
+  <div class="input-group">
+    <div class="label-group">
+      <%= label f, :title, "Title", class: "required text-base" %>
+      <%= error_tag f, :title %>
+    </div>
+    <%= text_input f, :title, placeholder: "Title" %>
+  </div>
+    <div class="label-group">
+      <%= label f, :message, "Feedback", class: "required text-base" %>
+      <%= error_tag f, :message %>
+    </div>
+  <%= textarea f, :message, class: "mb-4", rows: 8, placeholder: "We'd love to hear your feedback!" %>
+  <div class="text-right mb-4">
+    <%= submit "Submit", class: "btn-primary", data: [action: "click->feedback#submit"] %>
+  </div>
+<% end %>

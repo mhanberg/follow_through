@@ -52,4 +52,8 @@ config :follow_through, FollowThrough.Repo,
 
 config :follow_through, FollowThrough.Mailer, adapter: Bamboo.LocalAdapter
 
+config :follow_through,
+       :feedback_repo,
+       "https://api.github.com/repos/mhanberg/feedback_test/issues"
+
 import_config "dev.secret.exs"

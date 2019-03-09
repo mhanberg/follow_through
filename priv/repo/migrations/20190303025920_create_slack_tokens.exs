@@ -9,7 +9,7 @@ defmodule FollowThrough.Repo.Migrations.CreateSlackTokens do
       timestamps()
     end
 
-    create unique_index :slack_tokens, [:workspace_id]
-    create unique_index :slack_tokens, [:token]
+    create unique_index(:slack_tokens, [:workspace_id])
+    create unique_index(:slack_tokens, [:token])
   end
 end

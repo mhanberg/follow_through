@@ -1,10 +1,30 @@
 import { Controller } from "stimulus";
 
 export default class extends Controller {
-  static targets = ["window", "icon"];
+  static targets = ["window", "icon", "form", "formContainer"];
 
   connect() {
     this.open = false;
+    fetch(this.data.get("url"))
+      .then(r => r.text())
+      .then(html => {
+        this.element.innerHTML = html;
+      });
+  }
+
+  submit(event) {
+    event.preventDefault();
+
+    const data = new FormData(this.formTarget);
+
+    fetch(this.formTarget.action, {
+      method: this.formTarget.method,
+      body: data
+    })
+      .then(r => r.text())
+      .then(html => {
+        this.formContainerTarget.innerHTML = html;
+      });
   }
 
   toggleWindow() {

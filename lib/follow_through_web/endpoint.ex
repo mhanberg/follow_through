@@ -1,5 +1,6 @@
 defmodule FollowThroughWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :follow_through
+
   if Mix.env() == :prod do
     use Sentry.Phoenix.Endpoint
   end

@@ -46,7 +46,8 @@
         &middot; <%= link "Support", to: "mailto:support@followthrough.app", class: "text-blue-500 underline" %>
       </p>
     </main>
-    <%= render "_feedback.html", conn: @conn, feedback: @feedback %>
+ 
+    <div data-controller="feedback" data-feedback-url="<%= Routes.feedback_path(@conn, :new) %>"></div>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <%= render "_analytics.html" %>
   </body>

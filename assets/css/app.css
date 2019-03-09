@@ -229,6 +229,10 @@ textarea:focus {
   }
 }
 
+.hide-if-empty:empty {
+  @apply hidden;
+}
+
 .privacy > h1,
 .privacy > h2,
 .privacy > h3,

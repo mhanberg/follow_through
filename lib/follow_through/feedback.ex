@@ -2,6 +2,8 @@ defmodule FollowThrough.Feedback do
   use FollowThrough, :schema
   require Logger
 
+  @feedback_repo Application.get_env(:follow_through, :feedback_repo)
+
   embedded_schema do
     field :title, :string
     field :message, :string
@@ -15,21 +17,30 @@ defmodule FollowThrough.Feedback do
     |> validate_required([:title, :message, :user_id, :user_name])
   end
 
-  def create!(feedback) do
-    if feedback.valid? do
-      {:ok, %{status_code: 201}} =
+  def create(feedback) do
+    feedback
+    |> apply_action(:insert)
+    |> case do
+      {:ok, feedback} ->
         HTTPoison.post(
-          "https://api.github.com/repos/mhanberg/follow_through/issues",
+          @feedback_repo,
           Jason.encode!(%{
-            title: "#{feedback.changes.user_name} (#{feedback.changes.user_id}) #{feedback.changes.title}",
-            body: feedback.changes.message,
+            title: "#{feedback.user_name} (#{feedback.user_id}) #{feedback.title}",
+            body: feedback.message,
             label: ["feedback"]
           }),
           [{"Authorization", "token #{System.get_env("GITHUB_TOKEN")}"}]
         )
-    else
-      Logger.error inspect feedback
-      raise "Feedback not valid"
+        |> case do
+          {:ok, %{status_code: 201}} ->
+            :ok
+
+          _ ->
+            {:github_error, feedback}
+        end
+
+      {:error, feedback} ->
+        {:error, feedback}
     end
   end
 end

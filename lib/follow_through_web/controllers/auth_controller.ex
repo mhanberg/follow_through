@@ -12,7 +12,7 @@ defmodule FollowThroughWeb.AuthController do
   end
 
   def create(conn, %{"user" => user}) do
-    case  %User{} |> User.changeset(user) |> FollowThrough.Repo.insert() do
+    case %User{} |> User.changeset(user) |> FollowThrough.Repo.insert() do
       {:ok, %User{} = user} ->
         user
         |> Email.registration_email()

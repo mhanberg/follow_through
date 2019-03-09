@@ -1,0 +1,10 @@
+<div class="feedback" data-action="click->feedback#toggleWindow" data-target="feedback.icon">
+  <%= svg_image FollowThroughWeb.Endpoint, "question", class: "h-12 w-12 bg-white rounded-full fill-blue-500" %>
+</div>
+
+<div class="feedback-window hidden" data-target="feedback.window">
+  <h3 class="my-4 text-2xl">Feedback</h3>
+  <div data-target="feedback.formContainer">
+    <%= render "form.html", feedback: @feedback, message: nil, conn: @conn %>
+  </div>
+</div>

@@ -38,7 +38,7 @@ defmodule FollowThroughWeb.SlackView do
   end
 
   def render("subscription.json", %{channel_id: channel_id, team: team}) do
-    Logger.debug fn -> "Subscribed to #{inspect channel_id}" end
+    Logger.debug(fn -> "Subscribed to #{inspect(channel_id)}" end)
 
     %{
       "channel" => channel_id,
@@ -46,14 +46,15 @@ defmodule FollowThroughWeb.SlackView do
         %{
           "color" => "good",
           "title" => "Success!",
-          "text" => "You've successfully subscribed to updates from #{team.name}. These will be delivered everyday at 10am."
+          "text" =>
+            "You've successfully subscribed to updates from #{team.name}. These will be delivered everyday at 10am."
         }
       ]
     }
   end
 
   def render("unsubscribe.json", %{channel_id: channel_id, team: team}) do
-    Logger.debug fn -> "Unsubscribed from #{inspect channel_id}" end
+    Logger.debug(fn -> "Unsubscribed from #{inspect(channel_id)}" end)
 
     %{
       "channel" => channel_id,
@@ -75,7 +76,9 @@ defmodule FollowThroughWeb.SlackView do
         %{
           "color" => "#026AA7",
           "fallback" =>
-            "Finish connecting your Follow Through account at #{Routes.slack_auth_url(FollowThroughWeb.Endpoint, :new, user_id: user_id)}",
+            "Finish connecting your Follow Through account at #{
+              Routes.slack_auth_url(FollowThroughWeb.Endpoint, :new, user_id: user_id)
+            }",
           "actions" => [
             %{
               "type" => "button",
@@ -90,7 +93,7 @@ defmodule FollowThroughWeb.SlackView do
   end
 
   def render("error.json", %{channel_id: channel_id, error: error}) do
-    Logger.debug fn -> "Slack error for channel #{inspect channel_id}: #{inspect error}" end
+    Logger.debug(fn -> "Slack error for channel #{inspect(channel_id)}: #{inspect(error)}" end)
 
     %{
       "channel" => channel_id,

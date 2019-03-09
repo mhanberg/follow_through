@@ -42,6 +42,8 @@ defmodule FollowThrough.User do
     |> Repo.update()
   end
 
+  def get(id), do: __MODULE__ |> Repo.get(id)
+
   def find_or_create(auth) do
     case Repo.get_by(__MODULE__, github_uid: auth.uid) do
       %__MODULE__{} = user ->
