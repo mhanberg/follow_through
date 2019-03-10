@@ -118,6 +118,7 @@ input[type=text]:not(.choices__input),
 input[type=number],
 input[type=password],
 input[type=url],
+input[type=email],
 input[type=time] {
   @apply appearance-none border-b border-grey-700 w-full py-2 px-3 text-grey-500 h-10;
 }
@@ -126,6 +127,7 @@ input[type=text]:not(.choices__input):focus,
 input[type=number]:focus,
 input[type=password]:focus,
 input[type=url]:focus,
+input[type=email]:focus,
 input[type=time]:focus {
   @apply outline-none border-blue-500 bg-grey-200 text-grey-700;
 }
