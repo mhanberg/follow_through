@@ -7,6 +7,7 @@ defmodule FollowThrough.Subscription do
     field :service_team_id, :string
     field :service, :string
     field :delivery_time, :time
+    field :timezone, :string
 
     belongs_to :team, FollowThrough.Team
 
@@ -22,14 +23,15 @@ defmodule FollowThrough.Subscription do
       :service_team_id,
       :service,
       :delivery_time,
-      :team_id
+      :team_id,
+      :timezone
     ])
     |> validate_required([
       :channel_id,
       :channel_name,
       :service_team_id,
       :service,
-      :delivery_time,
+      :timezone,
       :team_id
     ])
     |> unique_constraint(:team_id,
@@ -48,15 +50,5 @@ defmodule FollowThrough.Subscription do
     %__MODULE__{}
     |> changeset(attrs)
     |> Repo.insert()
-  end
-
-  @spec delivery_time_in_utc(String.t()) :: String.t()
-  def delivery_time_in_utc(timezone) do
-    timezone
-    |> Timex.now()
-    |> Timex.set(time: ~T[10:00:00])
-    |> Timex.Timezone.convert("Etc/UTC")
-    |> DateTime.to_time()
-    |> Time.to_string()
   end
 end

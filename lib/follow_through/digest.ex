@@ -3,17 +3,23 @@ defmodule FollowThrough.Digest do
   @moduledoc false
   use GenServer
 
-  def start_link(subscription) do
-    GenServer.start_link(__MODULE__, subscription,
-      name: {:via, Registry, {ProcManager.Registry, subscription.id}}
+  def start_link(subscription_id) do
+    GenServer.start_link(__MODULE__, subscription_id,
+      name: {:via, Registry, {ProcManager.Registry, subscription_id}}
     )
   end
 
   @impl true
-  def init(subscription) do
-    schedule(subscription.delivery_time)
+  def init(subscription_id) do
+    case FollowThrough.Repo.get(FollowThrough.Subscription, subscription_id) do
+      nil ->
+        :ignore
 
-    {:ok, subscription}
+      subscription ->
+        schedule(subscription.timezone)
+
+        {:ok, subscription}
+    end
   end
 
   @impl true
@@ -50,7 +56,7 @@ defmodule FollowThrough.Digest do
         )
     end
 
-    schedule(subscription.delivery_time)
+    schedule(subscription.timezone)
 
     {:noreply, subscription}
   end
@@ -69,20 +75,22 @@ defmodule FollowThrough.Digest do
     |> Enum.join("\n\n")
   end
 
-  defp schedule(delivery_time) do
+  defp schedule(timezone) do
     delivery_time_offset =
       Timex.now()
-      |> case do
-        %DateTime{hour: hour} = now when hour < 15 ->
-          now
-
-        now ->
-          now
-          |> Timex.add(Timex.Duration.from_days(1))
-      end
-      |> Timex.set(time: delivery_time)
+      |> Timex.Timezone.convert(timezone)
+      |> next_available_day()
+      |> Timex.set(time: ~T[10:00:00])
       |> Timex.diff(Timex.now(), :milliseconds)
 
     Process.send_after(self(), :deliver, delivery_time_offset)
+  end
+
+  defp next_available_day(%DateTime{hour: hour} = time) when hour < 10 do
+    time
+  end
+
+  defp next_available_day(time) do
+    Timex.add(time, Timex.Duration.from_days(1))
   end
 end

@@ -29,14 +29,21 @@ defmodule FollowThrough.Subscription.Slash do
          %SlackToken{token: token} <- SlackToken.get_by_team(team_id),
          %{"ok" => true, "user" => %{"tz" => timezone}} <-
            Slack.Web.Users.info(user_id, %{include_locale: true, token: token}),
-         create_sub_and_start_digest(params, team, timezone) do
+         {:ok, _} <- create_sub_and_start_digest(params, team, timezone) do
       [template: :subscription, team: team]
     else
-      {:error, %Ecto.Changeset{errors: [{_, message}]}} ->
-        [template: :error, error: FollowThroughWeb.ErrorHelpers.translate_error(message)]
+      {:error, :create_sub, changeset, changes} ->
+        [
+          template: :error,
+          error:
+            changeset
+            |> Ecto.Changeset.traverse_errors(&FollowThroughWeb.ErrorHelpers.translate_error/1)
+            |> Map.fetch!(:team_id)
+            |> List.first()
+        ]
 
       error ->
-        Logger.debug(fn -> "Error subscribing #{inspect(error)}" end)
+        Logger.error(fn -> "Error subscribing #{inspect(error)}" end)
 
         error_message =
           if requested_team != "" do
@@ -88,19 +95,21 @@ defmodule FollowThrough.Subscription.Slash do
          team,
          timezone
        ) do
-    FollowThrough.Repo.transaction(fn ->
-      {:ok, %Subscription{} = sub} =
-        Subscription.create(%{
-          channel_id: channel_id,
-          channel_name: channel_name,
-          service_team_id: slack_team_id,
-          service: "Slack",
-          team_id: team.id,
-          delivery_time: Subscription.delivery_time_in_utc(timezone)
-        })
-
-      {:ok, _} = FollowThrough.DigestSupervisor.start_child(sub)
+    Ecto.Multi.new()
+    |> Ecto.Multi.run(:create_sub, fn _, _ ->
+      Subscription.create(%{
+        channel_id: channel_id,
+        channel_name: channel_name,
+        service_team_id: slack_team_id,
+        service: "Slack",
+        team_id: team.id,
+        timezone: timezone
+      })
     end)
+    |> Ecto.Multi.run(:start_digest, fn _, %{create_sub: sub} ->
+      FollowThrough.DigestSupervisor.start_child(sub)
+    end)
+    |> FollowThrough.Repo.transaction()
   end
 
   defp delete_sub_and_terminate_digest(id) do

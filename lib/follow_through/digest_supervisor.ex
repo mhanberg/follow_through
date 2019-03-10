@@ -9,8 +9,8 @@ defmodule FollowThrough.DigestSupervisor do
   end
 
   @spec start_child(%FollowThrough.Subscription{}) :: DynamicSupervisor.on_start_child()
-  def start_child(sub) do
-    ProcManager.start_child(FollowThrough.Digest, sub)
+  def start_child(id) do
+    ProcManager.start_child(FollowThrough.Digest, id)
   end
 
   @spec terminate_child(integer()) :: :ok | {:error, :not_found}
@@ -21,6 +21,6 @@ defmodule FollowThrough.DigestSupervisor do
   end
 
   defp start_digest(sub) do
-    Task.start_link(fn -> start_child(sub) end)
+    Task.start_link(fn -> start_child(sub.id) end)
   end
 end
