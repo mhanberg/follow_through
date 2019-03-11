@@ -35,25 +35,43 @@ defmodule FollowThrough.Digest do
         force: true
       )
 
-    unless subscription.team.obligations |> Enum.empty?() do
+    if subscription.timezone == nil do
+      %{"ok" => true} =
+        Slack.Web.Chat.post_message(
+          subscription.channel_id,
+          "Digest Maintenance needed for #{subscription.team.name}",
+          %{
+            attachments:
+              Jason.encode!([
+                %{
+                  color: "danger",
+                  text: "We're having trouble figuring out when to send your daily digest for #{subscription.team.name}, please try unsubscribing and resubscribe."
+                }
+              ]),
+            token: FollowThrough.SlackToken.get_by_team(subscription.service_team_id).token
+          }
+        )
+    else
+      unless subscription.team.obligations |> Enum.empty?() do
       %{"ok" => true} =
         Slack.Web.Chat.post_message(
           subscription.channel_id,
           "Daily digest for #{subscription.team.name}!",
           %{
             attachments:
-              Jason.encode!([
-                %{
-                  color: "#026AA7",
-                  text:
-                    subscription.team.obligations
-                    |> Enum.reject(& &1.completed)
-                    |> text()
-                }
-              ]),
+            Jason.encode!([
+              %{
+                color: "#026AA7",
+                text:
+                subscription.team.obligations
+                |> Enum.reject(& &1.completed)
+                |> text()
+              }
+            ]),
             token: FollowThrough.SlackToken.get_by_team(subscription.service_team_id).token
           }
         )
+      end
     end
 
     schedule(subscription.timezone)
@@ -78,12 +96,20 @@ defmodule FollowThrough.Digest do
   defp schedule(timezone) do
     delivery_time_offset =
       Timex.now()
-      |> Timex.Timezone.convert(timezone)
+      |> convert_timezone(timezone)
       |> next_available_day()
       |> Timex.set(time: ~T[10:00:00])
       |> Timex.diff(Timex.now(), :milliseconds)
 
     Process.send_after(self(), :deliver, delivery_time_offset)
+  end
+
+  def convert_timezone(datetime, nil) do
+    Timex.Timezone.convert(datetime, "Etc/UTC")
+  end
+
+  def convert_timezone(datetime, timezone) do
+    Timex.Timezone.convert(datetime, timezone)
   end
 
   defp next_available_day(%DateTime{hour: hour} = time) when hour < 10 do
