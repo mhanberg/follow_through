@@ -8,6 +8,7 @@ use Mix.Config
 # with webpack to recompile .js and .css sources.
 config :follow_through, FollowThroughWeb.Endpoint,
   http: [port: 4000],
+  url: [scheme: "https", host: "003bc72d.ngrok.io", port: 443],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -56,4 +57,6 @@ config :follow_through,
        :feedback_repo,
        "https://api.github.com/repos/mhanberg/feedback_test/issues"
 
-import_config "dev.secret.exs"
+config :ueberauth, Ueberauth.Strategy.Github.OAuth,
+  client_id: System.get_env("GITHUB_CLIENT_ID"),
+  client_secret: System.get_env("GITHUB_CLIENT_SECRET")

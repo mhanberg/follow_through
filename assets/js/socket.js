@@ -7,7 +7,9 @@ const socket = channelTokenTag
         token: channelTokenTag.content
       },
       logger(kind, msg, data) {
-        console.log(`${kind}: ${msg}`, data);
+        if (process.env.MIX_ENV === "dev") {
+          console.log(`${kind}: ${msg}`, data); // eslint-disable-line no-console
+        }
       }
     })
   : { connect() {} };

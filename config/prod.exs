@@ -37,3 +37,7 @@ config :sentry,
 config :follow_through,
        :feedback_repo,
        "https://api.github.com/repos/mhanberg/follow_through/issues"
+
+config :follow_through,
+       :analytics,
+       true

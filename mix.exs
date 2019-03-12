@@ -44,7 +44,7 @@ defmodule FollowThrough.MixProject do
       {:phoenix, "~> 1.4.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_inline_svg, git: "https://github.com/mhanberg/phoenix_inline_svg.git"},
+      {:phoenix_inline_svg, git: "https://github.com/nikkomiu/phoenix_inline_svg.git"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_pubsub, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
@@ -52,7 +52,8 @@ defmodule FollowThrough.MixProject do
       {:sentry, "~> 7.0"},
       {:slack, "~> 0.14.0"},
       {:timex, "~> 3.1"},
-      {:ueberauth_github, git: "https://github.com/ueberauth/ueberauth_github.git"}
+      {:ueberauth_github, git: "https://github.com/ueberauth/ueberauth_github.git"},
+      {:wallaby, "~> 0.22.0", [runtime: false, only: :test]}
     ]
   end
 
@@ -66,7 +67,14 @@ defmodule FollowThrough.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      "assets.compile": &compile_assets/1
     ]
+  end
+
+  defp compile_assets(_) do
+    Mix.shell().cmd("(cd assets && ./node_modules/webpack/bin/webpack.js --mode development)",
+      quiet: true
+    )
   end
 end

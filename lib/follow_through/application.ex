@@ -1,16 +1,19 @@
 defmodule FollowThrough.Application do
   @moduledoc false
+  @digest_supervisor Application.get_env(:follow_through, :digest_supervisor)
 
   use Application
 
   def start(_type, _args) do
-    children = [
-      FollowThrough.Repo,
-      FollowThroughWeb.Endpoint,
-      FollowThrough.DigestSupervisor
-    ]
+    children =
+      [
+        FollowThrough.Repo,
+        FollowThroughWeb.Endpoint,
+        @digest_supervisor
+      ]
+      |> Enum.filter(& &1)
 
-    if Mix.env() == :prod do
+    if Application.get_all_env(:sentry) != [] do
       {:ok, _} = Logger.add_backend(Sentry.LoggerBackend)
     end
 

@@ -1,4 +1,4 @@
-<%= if Mix.env() == :prod do %>
+<%= if Application.get_env(:follow_through, :analytics) == true do %>
   <!-- Fathom - simple website analytics - https://github.com/usefathom/fathom -->
   <script>
     (function(f, a, t, h, o, m){

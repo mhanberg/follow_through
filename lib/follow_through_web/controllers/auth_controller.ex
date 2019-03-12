@@ -42,6 +42,17 @@ defmodule FollowThroughWeb.AuthController do
     |> redirect(to: "/")
   end
 
+  if Application.get_env(:follow_through, :test) == true do
+    # This is for use during testing
+    def callback(conn, %{"provider" => "test", "id" => id}) do
+      user = FollowThrough.Repo.get!(User, id)
+
+      conn
+      |> put_session(:current_user, user)
+      |> redirect(to: Routes.team_path(conn, :index))
+    end
+  end
+
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     case Regex.match?(~r/users\.noreply\.github\.com/, auth.info.email) do
       true ->

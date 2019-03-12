@@ -1,7 +1,11 @@
 defmodule FollowThroughWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :follow_through
 
-  if Mix.env() == :prod do
+  if Application.get_env(:follow_through, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox
+  end
+
+  if Application.get_all_env(:sentry) != [] do
     use Sentry.Phoenix.Endpoint
   end
 

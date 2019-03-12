@@ -6,7 +6,7 @@ defmodule FollowThroughWeb.FeedbackController do
 
   def new(conn, _) do
     conn
-    |> render(:new, feedback: Feedback.changeset(%Feedback{}), message: message)
+    |> render(:new, feedback: Feedback.changeset(%Feedback{}), message: message())
   end
 
   def create(conn, %{"feedback" => feedback}) do
@@ -31,7 +31,7 @@ defmodule FollowThroughWeb.FeedbackController do
 
       {:error, feedback} ->
         conn
-        |> render(:form, feedback: feedback, message: message)
+        |> render(:form, feedback: feedback, message: message())
     end
   end
 

@@ -45,7 +45,10 @@ defmodule FollowThrough.Digest do
               Jason.encode!([
                 %{
                   color: "danger",
-                  text: "We're having trouble figuring out when to send your daily digest for #{subscription.team.name}, please try unsubscribing and resubscribe."
+                  text:
+                    "We're having trouble figuring out when to send your daily digest for #{
+                      subscription.team.name
+                    }, please try unsubscribing and resubscribe."
                 }
               ]),
             token: FollowThrough.SlackToken.get_by_team(subscription.service_team_id).token
@@ -53,24 +56,24 @@ defmodule FollowThrough.Digest do
         )
     else
       unless subscription.team.obligations |> Enum.empty?() do
-      %{"ok" => true} =
-        Slack.Web.Chat.post_message(
-          subscription.channel_id,
-          "Daily digest for #{subscription.team.name}!",
-          %{
-            attachments:
-            Jason.encode!([
-              %{
-                color: "#026AA7",
-                text:
-                subscription.team.obligations
-                |> Enum.reject(& &1.completed)
-                |> text()
-              }
-            ]),
-            token: FollowThrough.SlackToken.get_by_team(subscription.service_team_id).token
-          }
-        )
+        %{"ok" => true} =
+          Slack.Web.Chat.post_message(
+            subscription.channel_id,
+            "Daily digest for #{subscription.team.name}!",
+            %{
+              attachments:
+                Jason.encode!([
+                  %{
+                    color: "#026AA7",
+                    text:
+                      subscription.team.obligations
+                      |> Enum.reject(& &1.completed)
+                      |> text()
+                  }
+                ]),
+              token: FollowThrough.SlackToken.get_by_team(subscription.service_team_id).token
+            }
+          )
       end
     end
 

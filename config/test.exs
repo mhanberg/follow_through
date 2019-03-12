@@ -4,7 +4,7 @@ use Mix.Config
 # you can enable the server option below.
 config :follow_through, FollowThroughWeb.Endpoint,
   http: [port: 4002],
-  server: false
+  server: true
 
 # Print only warnings and errors during test
 config :logger, level: :warn
@@ -16,3 +16,12 @@ config :follow_through, FollowThrough.Repo,
   database: "follow_through_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :follow_through, :sql_sandbox, true
+
+config :wallaby,
+  driver: Wallaby.Experimental.Chrome,
+  chrome: [headless: true]
+
+config :follow_through, :test, true
+config :follow_through, :digest_supervisor, nil

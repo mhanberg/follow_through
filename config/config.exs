@@ -27,11 +27,19 @@ config :phoenix, :json_library, Jason
 
 config :ueberauth, Ueberauth,
   providers: [
-    github: {Ueberauth.Strategy.Github, [allow_private_emails: true]}
+    github: {Ueberauth.Strategy.Github, [allow_private_emails: true]},
+    identity:
+      {Ueberauth.Strategy.Identity,
+       [
+         callback_methods: ["GET"],
+         uid_field: :github_uid
+       ]}
   ],
   json_library: Jason
 
 config :oauth2, serializers: %{"application/json" => Jason}
+
+config :follow_through, :digest_supervisor, FollowThrough.DigestSupervisor
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -26,7 +26,7 @@ defmodule FollowThroughWeb.InvitationController do
 
               struct(emailer, send?: true, invitation: invite)
 
-            {:error, changeset} ->
+            {:error, _changeset} ->
               struct(emailer, send?: false, error?: true)
           end
 

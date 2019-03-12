@@ -32,7 +32,7 @@ defmodule FollowThrough.Subscription.Slash do
          {:ok, _} <- create_sub_and_start_digest(params, team, timezone) do
       [template: :subscription, team: team]
     else
-      {:error, :create_sub, changeset, changes} ->
+      {:error, :create_sub, changeset, _changes} ->
         [
           template: :error,
           error:

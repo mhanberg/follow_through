@@ -1,7 +1,7 @@
 defmodule FollowThroughWeb.Router do
   use FollowThroughWeb, :router
 
-  if Mix.env() == :prod do
+  if Application.get_all_env(:sentry) != [] do
     use Plug.ErrorHandler
     use Sentry.Plug
   end

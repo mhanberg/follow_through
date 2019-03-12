@@ -33,13 +33,15 @@ jobs:
           keys:
             - v1-plt-cache-{{ checksum "mix.lock" }}
             - v1-plt-cache
-          - run: mix dialyzer --plt
-          - save_cache:
-              key: v1-plt-cache-{{ checksum "mix.lock" }}
-              paths:
-                - _build
-                - ~/.mix
+      - run: mix dialyzer --plt
+      - save_cache:
+          key: v1-plt-cache-{{ checksum "mix.lock" }}
+          paths:
+            - _build
+            - ~/.mix
 
+      - run: mix format --check-formatted
       - run: mix credo
       - run: mix dialyzer --halt-exit-status
-
+      - run: bin/precompile_assets
+      - run: mix test
