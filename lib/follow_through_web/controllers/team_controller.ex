@@ -1,5 +1,6 @@
 defmodule FollowThroughWeb.TeamController do
   use FollowThroughWeb, :controller
+  # credo:disable-for-this-file Credo.Check.Readability.Specs
   alias FollowThrough.Invitation
   alias FollowThrough.Team
   alias FollowThrough.User

@@ -7,6 +7,7 @@ defmodule ProcManager do
 
       use Supervisor
 
+      @spec start_link(arg :: any()) :: Supervisor.on_start()
       def start_link(arg) do
         Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
       end
@@ -23,10 +24,12 @@ defmodule ProcManager do
     end
   end
 
+  @spec start_child(module :: module(), args :: any()) :: DynamicSupervisor.on_start_child()
   def start_child(module, args) do
     DynamicSupervisor.start_child(ProcManager.DynamicSupervisor, {module, args})
   end
 
+  @spec terminate_child(pid :: pid()) :: :ok | {:error, :not_found}
   def terminate_child(pid) do
     DynamicSupervisor.terminate_child(ProcManager.DynamicSupervisor, pid)
   end

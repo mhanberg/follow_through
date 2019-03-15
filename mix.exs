@@ -41,6 +41,7 @@ defmodule FollowThrough.MixProject do
       {:gettext, "~> 0.11"},
       {:httpoison, "~> 1.5", override: true},
       {:jason, "~> 1.0"},
+      {:mox, "~> 0.5", only: :test},
       {:phoenix, "~> 1.4.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},

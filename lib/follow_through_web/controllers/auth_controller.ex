@@ -1,6 +1,12 @@
 defmodule FollowThroughWeb.AuthController do
+  # credo:disable-for-this-file Credo.Check.Readability.Specs
   use FollowThroughWeb, :controller
-  alias FollowThrough.{User, Mailer, Email}
+
+  alias FollowThrough.{
+    Email,
+    Mailer,
+    User
+  }
 
   @moduledoc """
   Auth controller responsible for handling Ueberauth responses

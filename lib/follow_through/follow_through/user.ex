@@ -1,5 +1,6 @@
 defmodule FollowThrough.User do
   use FollowThrough, :schema
+  alias FollowThrough.Team
   require Ecto.Query
 
   schema "users" do
@@ -19,7 +20,7 @@ defmodule FollowThrough.User do
     timestamps()
   end
 
-  @doc false
+  @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :avatar, :github_uid, :slack_id, :remember_me_token, :email])
@@ -27,6 +28,7 @@ defmodule FollowThrough.User do
     |> unique_constraint(:github_uid)
   end
 
+  @spec new(map()) :: Ecto.Changeset.t()
   def new(auth) do
     %__MODULE__{}
     |> changeset(%{
@@ -36,14 +38,18 @@ defmodule FollowThrough.User do
     })
   end
 
+  @spec update(%__MODULE__{}, map()) :: {:ok, %__MODULE__{}} | {:error, Ecto.Changeset.t()}
   def update(user, attrs) do
     user
     |> changeset(attrs)
     |> Repo.update()
   end
 
+  @spec get(integer() | String.t()) :: %__MODULE__{} | nil
   def get(id), do: __MODULE__ |> Repo.get(id)
 
+  @spec find_or_create(map()) ::
+          {{:ok, %__MODULE__{}} | {:error, Ecto.Changeset.t()}, :new | :existing}
   def find_or_create(auth) do
     case Repo.get_by(__MODULE__, github_uid: auth.uid) do
       %__MODULE__{} = user ->
@@ -62,6 +68,7 @@ defmodule FollowThrough.User do
     end
   end
 
+  @spec teams(%__MODULE__{}) :: [%Team{}]
   def teams(user) do
     user
     |> FollowThrough.Repo.preload(

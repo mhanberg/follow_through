@@ -1,4 +1,5 @@
 defmodule FollowThroughWeb.FeedbackController do
+  # credo:disable-for-this-file Credo.Check.Readability.Specs
   use FollowThroughWeb, :controller
   alias FollowThrough.Feedback
 
@@ -17,27 +18,30 @@ defmodule FollowThroughWeb.FeedbackController do
       |> Map.put("user_name", current_user(conn).name)
     )
     |> Feedback.create()
-    |> case do
-      :ok ->
-        conn
-        |> render(:form,
-          feedback: Feedback.changeset(%Feedback{}),
-          message: message("Thanks for the feedback!", "green-500")
-        )
-
-      {:github_error, feedback} ->
-        conn
-        |> render(:form, feedback: feedback, message: message("Something went wrong", "red"))
-
-      {:error, feedback} ->
-        conn
-        |> render(:form, feedback: feedback, message: message())
-    end
+    |> handle_create(conn)
   end
 
-  def message(), do: %{message: nil, status: nil}
+  defp handle_create(:ok, conn) do
+    conn
+    |> render(:form,
+      feedback: Feedback.changeset(%Feedback{}),
+      message: message("Thanks for the feedback!", "green-500")
+    )
+  end
 
-  def message(message, status) do
+  defp handle_create({:github_error, feedback}, conn) do
+    conn
+    |> render(:form, feedback: feedback, message: message("Something went wrong", "red"))
+  end
+
+  defp handle_create({:error, feedback}, conn) do
+    conn
+    |> render(:form, feedback: feedback, message: message())
+  end
+
+  defp message(), do: %{message: nil, status: nil}
+
+  defp message(message, status) do
     %{message: message, status: status}
   end
 end

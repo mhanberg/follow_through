@@ -2,6 +2,7 @@ defmodule FollowThroughWeb.SlackView do
   use FollowThroughWeb, :view
   require Logger
 
+  @spec render(String.t(), map()) :: map()
   def render("help.json", %{channel_id: channel_id}) do
     %{
       "channel" => channel_id,

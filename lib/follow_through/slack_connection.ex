@@ -10,7 +10,7 @@ defmodule FollowThrough.SlackConnection do
     timestamps()
   end
 
-  @doc false
+  @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
   def changeset(slack_connection, attrs) do
     slack_connection
     |> cast(attrs, [:slack_id, :user_id])
@@ -18,6 +18,7 @@ defmodule FollowThrough.SlackConnection do
     |> unique_constraint(:slack_id)
   end
 
+  @spec create(map()) :: {:ok, %__MODULE__{}} | {:error, %Ecto.Changeset{}}
   def create(attrs) do
     %__MODULE__{}
     |> changeset(attrs)

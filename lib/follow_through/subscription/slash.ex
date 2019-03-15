@@ -2,12 +2,14 @@ defmodule FollowThrough.Subscription.Slash do
   @moduledoc """
   This module handles parsing slash commands from slack
   """
+  alias FollowThrough.SlackToken
   alias FollowThrough.Subscription
   alias FollowThrough.Team
-  alias FollowThrough.SlackToken
+  alias Slack.Web.Users, as: SlackClient
   import FollowThroughWeb.Helpers
   require Logger
 
+  @spec parse(commands :: [String.t()], Plug.Conn.t(), map()) :: keyword()
   def parse(["help"], _conn, _params) do
     [template: :help]
   end
@@ -28,7 +30,7 @@ defmodule FollowThrough.Subscription.Slash do
          true <- Team.has_member?(team, current_user(conn)),
          %SlackToken{token: token} <- SlackToken.get_by_team(team_id),
          %{"ok" => true, "user" => %{"tz" => timezone}} <-
-           Slack.Web.Users.info(user_id, %{include_locale: true, token: token}),
+           SlackClient.info(user_id, %{include_locale: true, token: token}),
          {:ok, _} <- create_sub_and_start_digest(params, team, timezone) do
       [template: :subscription, team: team]
     else

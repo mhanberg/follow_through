@@ -1,8 +1,11 @@
 defmodule FollowThroughWeb.TeamView do
   use FollowThroughWeb, :view
 
+  alias FollowThrough.Obligation
   alias FollowThrough.Team
+  alias FollowThrough.User
 
+  @spec admin_or_remove_link(%Plug.Conn{}, %Team{}, %User{}) :: {:safe, iodata()}
   def admin_or_remove_link(conn, team, user) do
     if team.created_by_id == user.id do
       svg_image(conn, "star-full", class: "h-4 w-4")
@@ -19,6 +22,7 @@ defmodule FollowThroughWeb.TeamView do
     end
   end
 
+  @spec has_obligations?(%User{}, integer()) :: boolean()
   def has_obligations?(user, team_id) do
     user.obligations
     |> FollowThrough.Obligation.for_team(team_id)
@@ -26,6 +30,7 @@ defmodule FollowThroughWeb.TeamView do
     |> Kernel.!()
   end
 
+  @spec delete_obligation_link(%Plug.Conn{}, %Team{}, %Obligation{}) :: {:safe, iodata()}
   def delete_obligation_link(conn, team, obligation) do
     if current_user(conn).id == obligation.user_id do
       link(

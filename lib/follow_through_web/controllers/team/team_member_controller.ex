@@ -1,4 +1,5 @@
 defmodule FollowThroughWeb.TeamMemberController do
+  # credo:disable-for-this-file Credo.Check.Readability.Specs
   use FollowThroughWeb, :controller
 
   def delete(conn, %{"team_id" => team_id, "id" => id}) do

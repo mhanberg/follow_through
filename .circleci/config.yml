@@ -40,8 +40,4 @@ jobs:
             - _build
             - ~/.mix
 
-      - run: mix format --check-formatted
-      - run: mix credo
-      - run: mix dialyzer --halt-exit-status
-      - run: bin/precompile_assets
-      - run: mix test
+      - run: bin/verify

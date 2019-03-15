@@ -1,54 +1,7 @@
 defmodule FollowThroughWeb.InvitationController do
+  # credo:disable-for-this-file Credo.Check.Readability.Specs
   use FollowThroughWeb, :controller
-  alias FollowThrough.Invitation
-
-  defmodule Emailer do
-    require Logger
-    alias FollowThrough.Mailer
-    alias FollowThrough.Email
-    alias FollowThrough.User
-    alias FollowThrough.Invitation
-    alias FollowThrough.Repo
-    defstruct [:send?, :invitation, :params, :error?]
-
-    def new(params) do
-      %__MODULE__{
-        params: params
-      }
-    end
-
-    def create_invite(%__MODULE__{params: params} = emailer) do
-      case Repo.get_by(User, email: params["invited_email"]) do
-        %User{} ->
-          case Invitation.create(params) do
-            {:ok, invite} ->
-              invite = invite |> Invitation.with_team()
-
-              struct(emailer, send?: true, invitation: invite)
-
-            {:error, _changeset} ->
-              struct(emailer, send?: false, error?: true)
-          end
-
-        nil ->
-          struct(emailer, send?: false)
-      end
-    end
-
-    def send(%__MODULE__{invitation: invitation, send?: send?} = emailer) do
-      if send? do
-        Logger.debug(fn -> "Sending invitation email to #{inspect(invitation.invited_email)}" end)
-
-        invitation
-        |> Email.invitation_email()
-        |> Mailer.deliver_now()
-      else
-        Logger.debug(fn -> "Not sending invitation email." end)
-      end
-
-      emailer
-    end
-  end
+  alias FollowThrough.Emailer
 
   def create(conn, %{"invitation" => params}) do
     params

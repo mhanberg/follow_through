@@ -53,10 +53,6 @@ config :follow_through, FollowThrough.Repo,
 
 config :follow_through, FollowThrough.Mailer, adapter: Bamboo.LocalAdapter
 
-config :follow_through,
-       :feedback_repo,
-       "https://api.github.com/repos/mhanberg/feedback_test/issues"
-
 config :ueberauth, Ueberauth.Strategy.Github.OAuth,
   client_id: System.get_env("GITHUB_CLIENT_ID"),
   client_secret: System.get_env("GITHUB_CLIENT_SECRET")

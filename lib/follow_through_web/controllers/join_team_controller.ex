@@ -1,4 +1,5 @@
 defmodule FollowThroughWeb.JoinTeamController do
+  # credo:disable-for-this-file Credo.Check.Readability.Specs
   use FollowThroughWeb, :controller
   alias FollowThrough.Invitation
   alias FollowThrough.Team
@@ -15,7 +16,10 @@ defmodule FollowThroughWeb.JoinTeamController do
   end
 
   def join(conn, %{"code" => code}) do
-    case Team.join(current_user(conn), code) do
+    conn
+    |> current_user()
+    |> Team.join(code)
+    |> case do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Successfully joined a team!")

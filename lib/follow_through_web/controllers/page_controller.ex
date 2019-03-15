@@ -1,4 +1,5 @@
 defmodule FollowThroughWeb.PageController do
+  # credo:disable-for-this-file Credo.Check.Readability.Specs
   use FollowThroughWeb, :controller
 
   def index(conn, _params) do

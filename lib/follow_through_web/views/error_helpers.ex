@@ -8,6 +8,7 @@ defmodule FollowThroughWeb.ErrorHelpers do
   @doc """
   Generates tag for inlined form input errors.
   """
+  @spec error_tag(Phoenix.HTML.Form.t(), atom()) :: list()
   def error_tag(form, field) do
     Enum.map(Keyword.get_values(form.errors, field), fn error ->
       content_tag(:div, translate_error(error), class: "text-red ml-2")
@@ -17,6 +18,7 @@ defmodule FollowThroughWeb.ErrorHelpers do
   @doc """
   Translates an error message using gettext.
   """
+  @spec translate_error({String.t(), keyword()}) :: String.t()
   def translate_error({msg, opts}) do
     # When using gettext, we typically pass the strings we want
     # to translate as a static argument:

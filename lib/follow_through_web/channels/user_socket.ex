@@ -5,6 +5,8 @@ defmodule FollowThroughWeb.UserSocket do
   channel "obligation:*", FollowThroughWeb.ObligationChannel
   channel "feedback:*", FollowThroughWeb.FeedbackChannel
 
+  @spec connect(%{required(String.t()) => String.t()}, Phoenix.Socket.t(), map()) ::
+          {:ok, Phoenix.Socket.t()} | :error
   def connect(%{"token" => token}, socket, _connect_info) do
     with {:ok, verified_user_id} <-
            Phoenix.Token.verify(FollowThroughWeb.Endpoint, "user salt", token, max_age: 86400),
@@ -29,5 +31,6 @@ defmodule FollowThroughWeb.UserSocket do
   #     FollowThroughWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
+  @spec id(Phoenix.Socket.t()) :: nil
   def id(_socket), do: nil
 end

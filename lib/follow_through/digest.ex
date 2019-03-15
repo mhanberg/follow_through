@@ -1,8 +1,11 @@
 defmodule FollowThrough.Digest do
   require Logger
+  alias FollowThrough.Obligation
+  alias Slack.Web.Chat, as: SlackClient
   @moduledoc false
   use GenServer
 
+  @spec start_link(integer()) :: GenServer.on_start()
   def start_link(subscription_id) do
     GenServer.start_link(__MODULE__, subscription_id,
       name: {:via, Registry, {ProcManager.Registry, subscription_id}}
@@ -37,7 +40,7 @@ defmodule FollowThrough.Digest do
 
     if subscription.timezone == nil do
       %{"ok" => true} =
-        Slack.Web.Chat.post_message(
+        SlackClient.post_message(
           subscription.channel_id,
           "Digest Maintenance needed for #{subscription.team.name}",
           %{
@@ -57,7 +60,7 @@ defmodule FollowThrough.Digest do
     else
       unless subscription.team.obligations |> Enum.empty?() do
         %{"ok" => true} =
-          Slack.Web.Chat.post_message(
+          SlackClient.post_message(
             subscription.channel_id,
             "Daily digest for #{subscription.team.name}!",
             %{
@@ -82,6 +85,7 @@ defmodule FollowThrough.Digest do
     {:noreply, subscription}
   end
 
+  @spec text([%Obligation{}]) :: String.t()
   def text(obligations) do
     obligations
     |> Enum.group_by(&{&1.user_id, &1.user.name})
@@ -107,6 +111,7 @@ defmodule FollowThrough.Digest do
     Process.send_after(self(), :deliver, delivery_time_offset)
   end
 
+  @spec convert_timezone(DateTime.t(), nil | Timex.Types.time_zone()) :: DateTime.t()
   def convert_timezone(datetime, nil) do
     Timex.Timezone.convert(datetime, "Etc/UTC")
   end

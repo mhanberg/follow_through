@@ -109,8 +109,10 @@ defmodule FollowThroughWeb.Router do
     slack_user_id = conn.params["user_id"]
     slack_channel_id = conn.params["channel_id"]
 
-    case FollowThrough.Repo.get_by(FollowThrough.SlackConnection, slack_id: slack_user_id)
-         |> FollowThrough.Repo.preload(:user) do
+    FollowThrough.SlackConnection
+    |> FollowThrough.Repo.get_by(slack_id: slack_user_id)
+    |> FollowThrough.Repo.preload(:user)
+    |> case do
       %FollowThrough.SlackConnection{user: user} ->
         conn
         |> put_session(:current_user, user)

@@ -1,6 +1,7 @@
 defmodule FollowThrough.Team do
   use FollowThrough, :schema
   alias FollowThrough.Invitation
+  alias FollowThrough.User
 
   schema "teams" do
     field :name, :string
@@ -19,22 +20,25 @@ defmodule FollowThrough.Team do
     timestamps()
   end
 
+  @spec new() :: Ecto.Changeset.t()
   def new() do
     %__MODULE__{}
     |> changeset
   end
 
-  @doc false
+  @spec changeset(%__MODULE__{}, map()) :: Ecto.Changeset.t()
   def changeset(team, attrs \\ %{}) do
     team
     |> cast(attrs, [:name, :created_by_id])
     |> validate_required([:name, :created_by_id])
   end
 
+  @spec get(id :: integer() | String.t()) :: %__MODULE__{} | nil
   def get(id) do
     Repo.get(__MODULE__, id)
   end
 
+  @spec get!(id :: integer() | String.t()) :: %__MODULE__{}
   def get!(id) do
     Repo.get!(__MODULE__, id)
   end
@@ -49,8 +53,9 @@ defmodule FollowThrough.Team do
     Repo.preload(team, :users)
   end
 
-  def with_users(nil), do: nil
+  def with_users(team) when is_nil(team), do: nil
 
+  @spec create(map()) :: {:ok, %__MODULE__{}} | {:error, Ecto.Changeset.t()}
   def create(attrs) do
     case %__MODULE__{}
          |> changeset(attrs)
@@ -70,6 +75,7 @@ defmodule FollowThrough.Team do
     end
   end
 
+  @spec join(%User{}, String.t()) :: {:ok, %__MODULE__{}} | {:error, String.t()}
   def join(user, invite_code) do
     with %Invitation{} = invitation <- Invitation.get_with_team(invite_code, user),
          %__MODULE__{} = team <- with_users(invitation.team),
@@ -95,6 +101,8 @@ defmodule FollowThrough.Team do
     |> Repo.update()
   end
 
+  @spec remove_member(id :: integer() | String.t(), member_id :: integer()) ::
+          {:ok, %__MODULE__{}} | {:error, Ecto.Changeset.t()}
   def remove_member(id, member_id) do
     with team <-
            __MODULE__
@@ -112,10 +120,12 @@ defmodule FollowThrough.Team do
     end
   end
 
+  @spec has_member?(%__MODULE__{users: [%User{}]}, %User{}) :: boolean()
   def has_member?(%__MODULE__{users: users}, user) do
     users
     |> Enum.any?(&(&1.id == user.id))
   end
 
+  @spec is_admin?(%__MODULE__{}, %User{}) :: boolean()
   def is_admin?(team, user), do: team.created_by_id == user.id
 end

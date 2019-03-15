@@ -14,7 +14,7 @@ defmodule FollowThrough.Subscription do
     timestamps()
   end
 
-  @doc false
+  @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
   def changeset(subscription, attrs) do
     subscription
     |> cast(attrs, [

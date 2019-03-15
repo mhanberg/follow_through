@@ -1,4 +1,5 @@
 defmodule FollowThroughWeb.SlackAuthController do
+  # credo:disable-for-this-file Credo.Check.Readability.Specs
   use FollowThroughWeb, :controller
   alias FollowThrough.SlackToken
 

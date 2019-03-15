@@ -1,13 +1,12 @@
 defmodule FollowThroughWeb.ErrorView do
   use FollowThroughWeb, :view
 
+  @spec render(String.t(), map()) :: String.t()
   def render("403.json", _assigns) do
     "Unauthorized"
   end
 
-  # By default, Phoenix returns the status message from
-  # the template name. For example, "404.html" becomes
-  # "Not Found".
+  # credo:disable-for-next-line Credo.Check.Readability.Specs
   def template_not_found(template, _assigns) do
     Phoenix.Controller.status_message_from_template(template)
   end

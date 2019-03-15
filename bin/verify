@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "==> mix format --check-formatted"
+mix format --check-formatted
+
+echo "==> mix credo --strict"
+mix credo --strict
+
+echo "==> mix dialyzer"
+mix dialyzer --halt-exit-status
+
+echo "==> bin/precompile_assets"
+bin/precompile_assets
+
+echo "==> mix test"
+mix test
+
+echo "==> bin/eslint"
+bin/eslint
+
+echo "==> bin/prettier"
+bin/prettier

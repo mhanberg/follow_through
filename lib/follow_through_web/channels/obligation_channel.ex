@@ -2,6 +2,7 @@ defmodule FollowThroughWeb.ObligationChannel do
   use FollowThroughWeb, :channel
   alias FollowThrough.Obligation
 
+  @impl true
   def join(
         "obligation:" <> obligation_id,
         _params,
@@ -14,6 +15,7 @@ defmodule FollowThroughWeb.ObligationChannel do
     end
   end
 
+  @impl true
   def handle_in("check:obligation:" <> obligation_id, %{"checked" => checked}, socket) do
     {:safe, svg_string} =
       if checked do

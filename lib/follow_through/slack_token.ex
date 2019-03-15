@@ -8,7 +8,7 @@ defmodule FollowThrough.SlackToken do
     timestamps()
   end
 
-  @doc false
+  @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
   def changeset(slack_token, attrs) do
     slack_token
     |> cast(attrs, [:token, :workspace_id])
@@ -24,7 +24,8 @@ defmodule FollowThrough.SlackToken do
     |> Repo.insert()
   end
 
-  def get_by_team(team) do
-    Repo.get_by(__MODULE__, workspace_id: team)
+  @spec get_by_team(String.t()) :: %__MODULE__{}
+  def get_by_team(workspace_id) do
+    Repo.get_by(__MODULE__, workspace_id: workspace_id)
   end
 end

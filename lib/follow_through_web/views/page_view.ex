@@ -1,6 +1,7 @@
 defmodule FollowThroughWeb.PageView do
   use FollowThroughWeb, :view
 
+  @spec sign_in_button(%Plug.Conn{}, String.t()) :: {:safe, iodata()}
   def sign_in_button(
         conn,
         button_classes \\ "btn-primary bg-white hover:bg-white text-blue-700 hover:text-blue-700 inline-flex items-center normal-case"
