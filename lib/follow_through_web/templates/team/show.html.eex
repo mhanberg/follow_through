@@ -39,7 +39,7 @@
             method: :delete,
             title: "Delete #{@team.name}.",
             class: "text-red-light underline hover:text-red-dark",
-            data: [confirm: "Are you sure you want to delete this #{@team.name}?"] %>
+            data: [confirm: "Are you sure you want to delete the team #{@team.name}?"] %>
     <% end %>
   </div>
 </div>

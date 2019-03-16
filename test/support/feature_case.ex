@@ -9,8 +9,22 @@ defmodule FollowThroughWeb.FeatureCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Wallaby.Query
+      import FollowThrough.Factory
 
       alias FollowThroughWeb.Router.Helpers, as: Routes
+
+      @spec login(session :: Wallaby.Browser.session()) ::
+              {%FollowThrough.User{}, Wallaby.Browser.session()}
+      def login(%{session: session}) do
+        user = insert(:user)
+
+        session =
+          session
+          |> visit("/auth/test/callback?id=#{user.id}")
+
+        %{current_user: user, session: session}
+      end
     end
   end
 
@@ -21,7 +35,7 @@ defmodule FollowThroughWeb.FeatureCase do
       Ecto.Adapters.SQL.Sandbox.mode(FollowThrough.Repo, {:shared, self()})
     end
 
-    start_supervised!(FollowThrough.DigestSupervisor)
+    # start_supervised!(FollowThrough.DigestSupervisor)
 
     metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(FollowThrough.Repo, self())
     {:ok, session} = Wallaby.start_session(metadata: metadata)

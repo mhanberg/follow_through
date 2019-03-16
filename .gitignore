@@ -42,3 +42,4 @@ yarn-error.log
 # variables.
 /config/*.secret.exs
 .env
+/screenshots

@@ -38,6 +38,7 @@ defmodule FollowThrough.MixProject do
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.0"},
+      {:ex_machina, "~> 2.3", only: :test},
       {:gettext, "~> 0.11"},
       {:httpoison, "~> 1.5", override: true},
       {:jason, "~> 1.0"},

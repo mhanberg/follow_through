@@ -20,6 +20,7 @@ config :follow_through, FollowThrough.Repo,
 config :follow_through, :sql_sandbox, true
 
 config :wallaby,
+  screenshot_on_failure: true,
   driver: Wallaby.Experimental.Chrome,
   chrome: [headless: true]
 
