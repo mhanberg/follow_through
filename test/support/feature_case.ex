@@ -6,6 +6,7 @@ defmodule FollowThroughWeb.FeatureCase do
       use Wallaby.DSL
 
       alias FollowThrough.Repo
+      alias FollowThroughWeb.Endpoint
       import Ecto
       import Ecto.Changeset
       import Ecto.Query

@@ -4,7 +4,7 @@
       <h2 class="text-2xl sm:text-3xl font-medium truncate"><%= @team.name %></h2>
     <% end %>
 
-    <%= link "new", to: Routes.team_obligation_path(@conn, :new, @team.id), class: "btn-primary hover:no-underline hover:text-white" %>
+    <%= link "New", to: Routes.team_obligation_path(@conn, :new, @team.id), class: "btn-primary hover:no-underline hover:text-white" %>
   </div>
 
   <div class="ml-auto sm:ml-4">

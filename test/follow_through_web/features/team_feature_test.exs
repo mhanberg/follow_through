@@ -57,6 +57,7 @@ defmodule FollowThroughWeb.TeamFeatureTest do
       |> visit(Routes.team_path(FollowThroughWeb.Endpoint, :show, team.id))
       |> accept_confirm(&click(&1, link("Delete Team")))
 
+    session |> assert_text("Successfully deleted #{team.name}!")
     assert message == "Are you sure you want to delete the team #{team.name}?"
   end
 end

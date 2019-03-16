@@ -11,10 +11,23 @@ defmodule FollowThrough.Factory do
   end
 
   def team_factory do
+    user = build(:user)
+
     %FollowThrough.Team{
       name: sequence(:name, &"Team#{&1}"),
-      creator: build(:user),
-      users: [build(:user)]
+      creator: user,
+      users: [user]
+    }
+  end
+
+  def obligation_factory do
+    user = build(:user)
+
+    %FollowThrough.Obligation{
+      description: sequence(:description, &"Obligation #{&1}"),
+      completed: false,
+      user: user,
+      team: build(:team, creator: user, users: [user])
     }
   end
 end
