@@ -1,9 +1,10 @@
 defmodule FollowThrough.Digest do
   require Logger
   alias FollowThrough.Obligation
-  alias Slack.Web.Chat, as: SlackClient
   @moduledoc false
   use GenServer
+
+  @slack Application.get_env(:follow_through, :slack, FollowThrough.SlackClientImpl)
 
   @spec start_link(integer()) :: GenServer.on_start()
   def start_link(subscription_id) do
@@ -40,7 +41,7 @@ defmodule FollowThrough.Digest do
 
     if subscription.timezone == nil do
       %{"ok" => true} =
-        SlackClient.post_message(
+        @slack.post_message(
           subscription.channel_id,
           "Digest Maintenance needed for #{subscription.team.name}",
           %{
@@ -58,9 +59,9 @@ defmodule FollowThrough.Digest do
           }
         )
     else
-      unless subscription.team.obligations |> Enum.empty?() do
+      unless subscription.team.obligations |> Enum.reject(& &1.completed) |> Enum.empty?() do
         %{"ok" => true} =
-          SlackClient.post_message(
+          @slack.post_message(
             subscription.channel_id,
             "Daily digest for #{subscription.team.name}!",
             %{

@@ -22,6 +22,7 @@ defmodule FollowThrough.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import FollowThrough.DataCase
+      import FollowThrough.Factory
     end
   end
 

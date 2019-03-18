@@ -11,7 +11,7 @@ defmodule FollowThrough.Factory do
   end
 
   def team_factory do
-    user = build(:user)
+    user = insert(:user)
 
     %FollowThrough.Team{
       name: sequence(:name, &"Team#{&1}"),
@@ -21,13 +21,31 @@ defmodule FollowThrough.Factory do
   end
 
   def obligation_factory do
-    user = build(:user)
+    user = insert(:user)
 
     %FollowThrough.Obligation{
       description: sequence(:description, &"Obligation #{&1}"),
       completed: false,
       user: user,
       team: build(:team, creator: user, users: [user])
+    }
+  end
+
+  def subscription_factory do
+    %FollowThrough.Subscription{
+      channel_id: sequence(:channel_id, &"#{&1}"),
+      channel_name: sequence(:channel_name, &"Channel #{&1}"),
+      service_team_id: sequence(:service_team_id, &"Service team #{&1}"),
+      service: "Slack",
+      timezone: "America/Indiana/Indianapolis",
+      team: build(:team)
+    }
+  end
+
+  def slack_token_factory do
+    %FollowThrough.SlackToken{
+      token: "tokenstring",
+      workspace_id: sequence(:workspace_id, &"workspace_id_#{&1}")
     }
   end
 end
