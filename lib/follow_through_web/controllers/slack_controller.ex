@@ -7,7 +7,7 @@ defmodule FollowThroughWeb.SlackController do
     assigns =
       text
       |> String.split(" ")
-      |> Slash.parse(conn, params)
+      |> Slash.parse(conn |> current_user(), params)
 
     conn
     |> put_status(200)

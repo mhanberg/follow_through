@@ -10,25 +10,28 @@ defmodule FollowThrough.Subscription.Slash do
 
   @slack Application.get_env(:follow_through, :slack, FollowThrough.SlackClientImpl)
 
-  @spec parse(commands :: [String.t()], Plug.Conn.t(), map()) :: keyword()
-  def parse(["help"], _conn, _params) do
+  @spec parse(commands :: [String.t()], %FollowThrough.User{}, map()) :: keyword()
+  def parse(["help"], _current_user, _params) do
     [template: :help]
   end
 
-  def parse(["list"], conn, _params) do
+  def parse(["list"], current_user, _params) do
     teams =
-      conn
-      |> current_user()
+      current_user
       |> FollowThrough.User.teams()
 
     [teams: teams, template: :list]
   end
 
-  def parse(["subscribe" | rest], conn, %{"user_id" => user_id, "team_id" => team_id} = params) do
+  def parse(
+        ["subscribe" | rest],
+        current_user,
+        %{"user_id" => user_id, "team_id" => team_id} = params
+      ) do
     requested_team = Enum.join(rest, " ")
 
     with %Team{} = team <- Team.get_by(name: requested_team) |> Team.with_users(),
-         true <- Team.has_member?(team, current_user(conn)),
+         true <- Team.has_member?(team, current_user),
          %SlackToken{token: token} <- SlackToken.get_by_team(team_id),
          %{"ok" => true, "user" => %{"tz" => timezone}} <-
            @slack.info(user_id, %{include_locale: true, token: token}),
@@ -61,7 +64,7 @@ defmodule FollowThrough.Subscription.Slash do
 
   def parse(
         ["unsubscribe" | rest],
-        conn,
+        current_user,
         %{
           "channel_id" => channel_id,
           "team_id" => slack_team_id
@@ -69,7 +72,7 @@ defmodule FollowThrough.Subscription.Slash do
       ) do
     requested_team = Enum.join(rest, " ")
 
-    with %Team{} = team <- authorized?(conn, requested_team),
+    with %Team{} = team <- authorized?(current_user, requested_team),
          %Subscription{} = sub <-
            Subscription.get_by(
              channel_id: channel_id,
@@ -119,9 +122,9 @@ defmodule FollowThrough.Subscription.Slash do
     end)
   end
 
-  defp authorized?(conn, requested_team) do
+  defp authorized?(current_user, requested_team) do
     with %Team{} = team <- Team.get_by(name: requested_team) |> Team.with_users(),
-         true <- Team.has_member?(team, current_user(conn)) do
+         true <- Team.has_member?(team, current_user) do
       team
     else
       _ ->
