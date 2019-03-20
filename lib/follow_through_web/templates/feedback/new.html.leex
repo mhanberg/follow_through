@@ -1,0 +1,10 @@
+<div class="feedback" phx-click="toggle-window">
+  <%= @icon %>
+</div>
+
+<div class="feedback-window <%= @hidden %>">
+  <h3 class="my-4 text-2xl">Feedback</h3>
+  <div>
+    <%= render "form.html", feedback: @feedback, message: @message %>
+  </div>
+</div>

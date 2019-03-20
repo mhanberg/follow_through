@@ -41,6 +41,7 @@ defmodule FollowThroughWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
       import PhoenixInlineSvg.Helpers
+      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
 
       import FollowThroughWeb.ErrorHelpers
       import FollowThroughWeb.Helpers
@@ -55,6 +56,7 @@ defmodule FollowThroughWeb do
       import Plug.Conn
       import Phoenix.Controller
       import FollowThroughWeb.Helpers
+      import Phoenix.LiveView.Router
     end
   end
 

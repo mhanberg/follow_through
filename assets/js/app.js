@@ -3,12 +3,16 @@
 // its own CSS file.
 
 import "phoenix_html";
+import LiveSocket from "phoenix_live_view";
 
 import { Application } from "stimulus";
 import { definitionsFromContext } from "stimulus/webpack-helpers";
 import "../css/app.css";
 
 import socket from "./socket";
+
+const liveSocket = new LiveSocket("/live");
+liveSocket.connect();
 
 const application = Application.start();
 const context = require.context("./controllers", true, /\.js$/);

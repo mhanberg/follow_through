@@ -10,6 +10,7 @@ defmodule FollowThroughWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
+    plug Phoenix.LiveView.Flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -73,7 +74,6 @@ defmodule FollowThroughWeb.Router do
     end
 
     resources "/invitations", InvitationController, only: [:create]
-    resources "/feedback", FeedbackController, only: [:new, :create]
 
     get "/join/:code", JoinTeamController, :new
     post "/join/:code", JoinTeamController, :join

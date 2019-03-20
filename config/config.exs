@@ -15,7 +15,10 @@ config :follow_through, FollowThroughWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "nY3C0GXIKstZHvdbMRw57Pq2abtpD9DA8wZe+zH5krQlxNUANcVLAB7J/5MNlb4C",
   render_errors: [view: FollowThroughWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: FollowThrough.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: FollowThrough.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+    signing_salt: "MLnI0zkklTWG1I5Vv1I8D7USDzmaoT+E2ZqLSjKqRt32YCrYN27VBkFw8XKw1doN"
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -23,17 +26,13 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Use Jason for JSON parsing in Phoenix
-config :phoenix, :json_library, Jason
+config :phoenix,
+  json_library: Jason,
+  template_engines: [leex: Phoenix.LiveView.Engine]
 
 config :ueberauth, Ueberauth,
   providers: [
-    github: {Ueberauth.Strategy.Github, [allow_private_emails: true]},
-    identity:
-      {Ueberauth.Strategy.Identity,
-       [
-         callback_methods: ["GET"],
-         uid_field: :github_uid
-       ]}
+    github: {Ueberauth.Strategy.Github, [allow_private_emails: true]}
   ],
   json_library: Jason
 

@@ -8,7 +8,7 @@ use Mix.Config
 # with webpack to recompile .js and .css sources.
 config :follow_through, FollowThroughWeb.Endpoint,
   http: [port: 4000],
-  url: [scheme: "https", host: "003bc72d.ngrok.io", port: 443],
+  url: [scheme: "https", host: "8775c986.ngrok.io", port: 443],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -29,7 +29,8 @@ config :follow_through, FollowThroughWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/follow_through_web/views/.*(ex)$},
-      ~r{lib/follow_through_web/templates/.*(eex)$}
+      ~r{lib/follow_through_web/templates/.*(eex)$},
+      ~r{live/follow_through_web/live/.*(ex)$}
     ]
   ]
 

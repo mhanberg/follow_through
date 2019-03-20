@@ -47,7 +47,7 @@
       </p>
     </main>
  
-    <div data-controller="feedback" data-feedback-url="<%= Routes.feedback_path(@conn, :new) %>"></div>
+    <%= live_render @conn, FollowThroughWeb.Live.FeedbackView, session: %{current_user: current_user(@conn)} %>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <%= render "_analytics.html" %>
   </body>
