@@ -53,6 +53,4 @@ config :follow_through, FollowThrough.Repo,
 
 config :follow_through, FollowThrough.Mailer, adapter: Bamboo.LocalAdapter
 
-config :ueberauth, Ueberauth.Strategy.Github.OAuth,
-  client_id: System.get_env("GITHUB_CLIENT_ID"),
-  client_secret: System.get_env("GITHUB_CLIENT_SECRET")
+config :follow_through, :google_feature, true

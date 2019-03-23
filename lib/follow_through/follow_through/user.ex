@@ -1,5 +1,6 @@
 defmodule FollowThrough.User do
   use FollowThrough, :schema
+  alias FollowThrough.Credential
   alias FollowThrough.Team
   require Ecto.Query
 
@@ -11,6 +12,7 @@ defmodule FollowThrough.User do
     field :avatar, :string
     field :remember_me_token, :string
 
+    has_many :credentials, FollowThrough.Credential
     has_many :obligations, FollowThrough.Obligation
 
     many_to_many :teams,
@@ -23,9 +25,9 @@ defmodule FollowThrough.User do
   @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :avatar, :github_uid, :slack_id, :remember_me_token, :email])
-    |> validate_required([:name, :avatar, :github_uid, :email])
-    |> unique_constraint(:github_uid)
+    |> cast(attrs, [:name, :avatar, :slack_id, :remember_me_token, :email, :github_uid])
+    |> cast_assoc(:credentials)
+    |> validate_required([:name, :avatar, :email, :github_uid])
   end
 
   @spec new(map()) :: Ecto.Changeset.t()
@@ -51,17 +53,21 @@ defmodule FollowThrough.User do
   @spec find_or_create(map()) ::
           {{:ok, %__MODULE__{}} | {:error, Ecto.Changeset.t()}, :new | :existing}
   def find_or_create(auth) do
-    case Repo.get_by(__MODULE__, github_uid: auth.uid) do
-      %__MODULE__{} = user ->
+    Credential
+    |> Repo.get_by(uid: to_string(auth.uid), provider: to_string(auth.provider))
+    |> Repo.preload(:user)
+    |> case do
+      %Credential{user: user} ->
         {{:ok, user}, :existing}
 
       nil ->
         %__MODULE__{}
         |> changeset(%{
-          github_uid: auth.uid,
+          github_uid: 123,
           name: auth.info.name,
           email: auth.info.email,
-          avatar: auth.info.image
+          avatar: auth.info.image,
+          credentials: [%{uid: to_string(auth.uid), provider: to_string(auth.provider)}]
         })
         |> Repo.insert()
         |> wrap_as_new()

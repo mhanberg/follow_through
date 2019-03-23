@@ -3,10 +3,10 @@ defmodule FollowThrough.Factory do
 
   def user_factory do
     %FollowThrough.User{
-      github_uid: sequence(:github_uid, & &1),
       avatar: sequence(:avatar, &"github-avatar-url.example.com/#{&1}"),
       email: sequence(:email, &"user#{&1}@example.com"),
-      name: sequence(:name, &"user#{&1}")
+      name: sequence(:name, &"user#{&1}"),
+      github_uid: sequence(:github_uid, & &1)
     }
   end
 
@@ -46,6 +46,14 @@ defmodule FollowThrough.Factory do
     %FollowThrough.SlackToken{
       token: "tokenstring",
       workspace_id: sequence(:workspace_id, &"workspace_id_#{&1}")
+    }
+  end
+
+  def credential_factory do
+    %FollowThrough.Credential{
+      uid: sequence(:uid, &"uid#{&1}"),
+      provider: "GitHub",
+      user: build(:user)
     }
   end
 end

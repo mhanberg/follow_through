@@ -8,6 +8,12 @@ defmodule FollowThroughWeb.PageController do
     |> render("index.html")
   end
 
+  def login(conn, _) do
+    conn
+    |> put_layout({FollowThroughWeb.LayoutView, "marketing.html"})
+    |> render(:login)
+  end
+
   def privacy(conn, _) do
     conn
     |> put_layout({FollowThroughWeb.LayoutView, "marketing.html"})

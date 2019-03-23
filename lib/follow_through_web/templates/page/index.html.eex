@@ -1,4 +1,17 @@
 <div class="bg-blue-500">
+  <header class="container pt-4 pb-8">
+    <div class="flex items-center justify-center sm:justify-between mx-2">
+      <%= link to: Routes.team_path(@conn, :index), class: "flex items-end text-2xl font-semibold text-white hover:text-white hover:no-underline" do %>
+        <%= svg_image(@conn, "logo", class: "h-8 w-8 stroke-white mr-4") %>
+        <span>Follow Through</span>
+      <% end %>
+      <div class="hidden sm:flex sm:items-center">
+        <%= sign_in_button(@conn, :github) %>
+      </div>
+    </div>
+  </header>
+</div>
+<div class="bg-blue-500">
   <div class="container pb-8">
     <p class="text-white font-medium text-3xl text-center mb-8">
     Never let your team down again.
@@ -9,7 +22,7 @@
     </p>
 
     <div class="text-center mb-8">
-      <%= sign_in_button(@conn) %>
+      <%= sign_in_button(@conn, :github) %>
     </div>
 
     <div class="text-center">
@@ -46,7 +59,7 @@
     </div>
 
     <div class="text-center pb-16">
-      <%= sign_in_button(@conn, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
+      <%= sign_in_button(@conn, :github, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
     </div>
   </div>
 </div>
@@ -59,7 +72,7 @@
     <div class="grid mb-16">
       <p class="text-blue-900 text-right text-lg grid-label">Create your team in Follow Through</p>
       <div class="grid-item">
-        <%= sign_in_button(@conn, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
+        <%= sign_in_button(@conn, :github, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
       </div>
 
       <p class="text-blue-900 text-right text-lg grid-label">Install our app</p>

@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
+# shellcheck source=../.env
+source .env
+
 iex -S mix phx.server

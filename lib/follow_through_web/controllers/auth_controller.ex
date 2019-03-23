@@ -3,8 +3,10 @@ defmodule FollowThroughWeb.AuthController do
   use FollowThroughWeb, :controller
 
   alias FollowThrough.{
+    Credential,
     Email,
     Mailer,
+    Repo,
     User
   }
 
@@ -60,7 +62,11 @@ defmodule FollowThroughWeb.AuthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    case Regex.match?(~r/users\.noreply\.github\.com/, auth.info.email) do
+    Credential
+    |> Repo.get_by(uid: to_string(auth.uid), provider: to_string(auth.provider))
+    |> Kernel.is_nil()
+    |> Kernel.&&(Regex.match?(~r/users\.noreply\.github\.com/, auth.info.email))
+    |> case do
       true ->
         conn
         |> redirect(

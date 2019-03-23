@@ -1,1 +1,22 @@
-<h1 class="text-center">Please Log In</h1>
+<section class="border-t-7 border-blue-800 bg-grey-200 flex-1">
+  <header class="container py-4 mb-4">
+    <div class="flex items-center justify-between mx-2">
+      <%= link to: Routes.team_path(@conn, :index), class: "flex items-end group text-2xl font-semibold text-blue-700 hover:text-blue-300 hover:no-underline" do %>
+        <%= svg_image(@conn, "logo", class: "h-8 w-8 stroke-blue-700 group-hover:stroke-blue-300 sm:mr-4") %>
+        <span class="hidden sm:block">Follow Through</span>
+      <% end %>
+    <div>
+  </header>
+  <div class="container">
+    <h1 class="text-center mb-8 text-grey-700">Sign in with your preferred service</h1>
+    <div class="flex flex-col items-center">
+      <%= sign_in_button(@conn, :github, "btn-primary text-white hover:text-white inline-flex items-center normal-case mb-4") %>
+      <%= sign_in_button(@conn, :google) %>
+    </div>
+  </div>
+</section>
+<p class="text-center text-blue-700 pb-8 leading-normal bg-grey-200">
+  A project by <%= link "Mitchell Hanberg", to: "https://www.mitchellhanberg.com", class: "text-blue-500 underline" %>
+  &middot; <%= link "Privacy Policy", to: Routes.page_path(@conn, :privacy), class: "text-blue-500 underline" %>
+  &middot; <%= link "Support", to: "mailto:support@followthrough.app", class: "text-blue-500 underline" %>
+</p>

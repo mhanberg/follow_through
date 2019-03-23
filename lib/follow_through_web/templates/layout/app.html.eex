@@ -20,7 +20,7 @@
             <%= svg_image(@conn, "logo", class: "h-8 w-8 stroke-blue-700 group-hover:stroke-blue-300 sm:mr-4") %>
             <span class="hidden sm:block">Follow Through</span>
           <% end %>
-          <div>
+        <div>
             <%= unless logged_in?(@conn) do %>
               <%= link to: "/auth/github", class: "btn-primary flex items-center normal-case" do %>
                 <%= svg_image(@conn, "octocat", class: "h-6 w-6 mr-4") %>

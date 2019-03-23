@@ -55,6 +55,7 @@ defmodule FollowThrough.MixProject do
       {:slack, "~> 0.14.0"},
       {:timex, "~> 3.1"},
       {:ueberauth_github, git: "https://github.com/ueberauth/ueberauth_github.git"},
+      {:ueberauth_google, "~> 0.8"},
       {:wallaby, "~> 0.22.0", [runtime: false, only: :test]}
     ]
   end

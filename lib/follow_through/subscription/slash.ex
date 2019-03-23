@@ -5,7 +5,6 @@ defmodule FollowThrough.Subscription.Slash do
   alias FollowThrough.SlackToken
   alias FollowThrough.Subscription
   alias FollowThrough.Team
-  import FollowThroughWeb.Helpers
   require Logger
 
   @slack Application.get_env(:follow_through, :slack, FollowThrough.SlackClientImpl)
