@@ -5,7 +5,6 @@ defmodule FollowThrough.User do
   require Ecto.Query
 
   schema "users" do
-    field :github_uid, :integer
     field :slack_id, :string
     field :name, :string
     field :email, :string
@@ -25,16 +24,18 @@ defmodule FollowThrough.User do
   @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :avatar, :slack_id, :remember_me_token, :email, :github_uid])
+    |> cast(attrs, [:name, :avatar, :slack_id, :remember_me_token, :email])
     |> cast_assoc(:credentials)
-    |> validate_required([:name, :avatar, :email, :github_uid])
+    |> validate_required([:name, :avatar, :email])
   end
 
   @spec new(map()) :: Ecto.Changeset.t()
   def new(auth) do
     %__MODULE__{}
     |> changeset(%{
-      github_uid: auth["uid"],
+      credentials: [
+        %{uid: auth["uid"], provider: "github"}
+      ],
       name: auth["name"],
       avatar: auth["image"]
     })
@@ -63,7 +64,6 @@ defmodule FollowThrough.User do
       nil ->
         %__MODULE__{}
         |> changeset(%{
-          github_uid: 123,
           name: auth.info.name,
           email: auth.info.email,
           avatar: auth.info.image,

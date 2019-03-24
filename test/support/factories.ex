@@ -5,8 +5,7 @@ defmodule FollowThrough.Factory do
     %FollowThrough.User{
       avatar: sequence(:avatar, &"github-avatar-url.example.com/#{&1}"),
       email: sequence(:email, &"user#{&1}@example.com"),
-      name: sequence(:name, &"user#{&1}"),
-      github_uid: sequence(:github_uid, & &1)
+      name: sequence(:name, &"user#{&1}")
     }
   end
 

@@ -25,7 +25,6 @@ defmodule FollowThrough.UserTest do
     auth = %{
       uid: expected_uid,
       provider: :github,
-      github_uid: 123,
       info: %{
         name: expected_name,
         email: expected_email,

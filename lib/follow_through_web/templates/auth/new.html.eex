@@ -11,7 +11,10 @@
       </div>
 
       <%= hidden_input f, :avatar %>
-      <%= hidden_input f, :github_uid %>
+      <%= inputs_for f, :credentials, fn fc -> %>
+        <%= hidden_input fc, :uid %>
+        <%= hidden_input fc, :provider %>
+      <% end %>
       <%= hidden_input f, :name %>
 
       <div class="text-right">
