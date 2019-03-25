@@ -59,7 +59,9 @@ defmodule FollowThrough.Digest do
           }
         )
     else
-      unless subscription.team.obligations |> Enum.reject(& &1.completed) |> Enum.empty?() do
+      day_of_week = Timex.now() |> Timex.weekday()
+
+      unless has_incomplete_tasks?(subscription) || weekend?(day_of_week) do
         %{"ok" => true} =
           @slack.post_message(
             subscription.channel_id,
@@ -85,6 +87,11 @@ defmodule FollowThrough.Digest do
 
     {:noreply, subscription}
   end
+
+  defp has_incomplete_tasks?(sub),
+    do: sub.team.obligations |> Enum.reject(& &1.completed) |> Enum.empty?()
+
+  defp weekend?(day), do: day == 6 || day == 7
 
   @spec text([%Obligation{}]) :: String.t()
   def text(obligations) do
