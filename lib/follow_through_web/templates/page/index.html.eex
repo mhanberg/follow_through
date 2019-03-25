@@ -6,7 +6,7 @@
         <span>Follow Through</span>
       <% end %>
       <div class="hidden sm:flex sm:items-center">
-        <%= sign_in_button(@conn, :github) %>
+        <%= login_link_white(@conn) %>
       </div>
     </div>
   </header>
@@ -22,7 +22,7 @@
     </p>
 
     <div class="text-center mb-8">
-      <%= sign_in_button(@conn, :github) %>
+      <%= login_link_white(@conn) %>
     </div>
 
     <div class="text-center">
@@ -59,7 +59,7 @@
     </div>
 
     <div class="text-center pb-16">
-      <%= sign_in_button(@conn, :github, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
+      <%= login_link_dark(@conn) %>
     </div>
   </div>
 </div>
@@ -72,7 +72,7 @@
     <div class="grid mb-16">
       <p class="text-blue-900 text-right text-lg grid-label">Create your team in Follow Through</p>
       <div class="grid-item">
-        <%= sign_in_button(@conn, :github, "btn-primary text-white hover:text-white inline-flex items-center normal-case") %>
+        <%= login_link_white(@conn) %>
       </div>
 
       <p class="text-blue-900 text-right text-lg grid-label">Install our app</p>

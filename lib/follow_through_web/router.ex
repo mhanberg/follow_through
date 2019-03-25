@@ -83,11 +83,7 @@ defmodule FollowThroughWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-
-    if Application.get_env(:follow_through, :google_feature) == true do
-      get "/login", PageController, :login
-    end
-
+    get "/login", PageController, :login
     get "/privacy", PageController, :privacy
     get "/slack/install", SlackAuthController, :install
   end

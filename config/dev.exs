@@ -52,5 +52,3 @@ config :follow_through, FollowThrough.Repo,
   pool_size: 10
 
 config :follow_through, FollowThrough.Mailer, adapter: Bamboo.LocalAdapter
-
-config :follow_through, :google_feature, true
