@@ -1,10 +1,12 @@
 defmodule FollowThroughWeb.VerifyFromSlack do
+  @behaviour Plug
+
   import Plug.Conn
 
-  @spec init(any()) :: any()
+  @impl true
   def init(options), do: options
 
-  @spec call(Plug.Conn.t(), any()) :: Plug.Conn.t()
+  @impl true
   def call(conn, _) do
     signing_salt = System.get_env("SLACK_SIGNING_SECRET")
     [request_body] = conn.assigns[:raw_body]

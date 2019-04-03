@@ -24,7 +24,7 @@ defmodule FollowThroughWeb.Router do
   end
 
   pipeline :authorize do
-    plug :logged_in?
+    plug FollowThroughWeb.LoggedIn
   end
 
   pipeline :slack do
@@ -92,18 +92,6 @@ defmodule FollowThroughWeb.Router do
     pipe_through [:api, :slack]
 
     post "/slack", SlackController, :slash
-  end
-
-  defp logged_in?(conn, _) do
-    case current_user(conn) do
-      nil ->
-        conn
-        |> Phoenix.Controller.redirect(to: "/")
-        |> halt()
-
-      _ ->
-        conn
-    end
   end
 
   defp slack_auth(conn, _) do

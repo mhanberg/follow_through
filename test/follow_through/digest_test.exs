@@ -3,11 +3,16 @@ defmodule FollowThrough.DigestTest do
   alias FollowThrough.Digest, as: D
   import Mox
 
+  @monday 1
+
   setup :set_mox_global
   setup :verify_on_exit!
 
   setup do
     start_supervised!({Registry, keys: :unique, name: ProcManager.Registry})
+
+    FollowThrough.TimeMock
+    |> stub(:weekday, fn _ -> @monday end)
 
     :ok
   end
@@ -29,12 +34,15 @@ defmodule FollowThrough.DigestTest do
     subscription = insert(:subscription, team: obligation.team)
     insert(:slack_token, workspace_id: subscription.service_team_id)
 
-    digest = start_supervised!({D, subscription.id})
+    FollowThrough.TimeMock
+    |> expect(:weekday, fn _ -> @monday end)
 
     channel_id = subscription.channel_id
 
     FollowThrough.SlackClientMock
     |> expect(:post_message, fn ^channel_id, _, _ -> %{"ok" => true} end)
+
+    digest = start_supervised!({D, subscription.id})
 
     Kernel.send(digest, :deliver)
     :sys.get_state(digest)

@@ -5,6 +5,7 @@ defmodule FollowThrough.Digest do
   use GenServer
 
   @slack Application.get_env(:follow_through, :slack, FollowThrough.SlackClientImpl)
+  @time Application.get_env(:follow_through, :time, FollowThrough.TimeImpl)
 
   @spec start_link(integer()) :: GenServer.on_start()
   def start_link(subscription_id) do
@@ -59,7 +60,7 @@ defmodule FollowThrough.Digest do
           }
         )
     else
-      day_of_week = Timex.now() |> Timex.weekday()
+      day_of_week = Timex.now() |> @time.weekday()
 
       unless has_incomplete_tasks?(subscription) || weekend?(day_of_week) do
         %{"ok" => true} =

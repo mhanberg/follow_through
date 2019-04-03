@@ -16,10 +16,10 @@ defmodule FollowThroughWeb.AuthController do
 
   def new(conn, params) do
     conn
-    |> render(:new, user: User.new(params))
+    |> render(:new, user: User.new(params), path: params["path"])
   end
 
-  def create(conn, %{"user" => user}) do
+  def create(conn, %{"user" => user, "path" => path}) do
     case %User{} |> User.changeset(user) |> FollowThrough.Repo.insert() do
       {:ok, %User{} = user} ->
         user
@@ -29,11 +29,11 @@ defmodule FollowThroughWeb.AuthController do
         conn
         |> put_flash(:info, "Successfully registered!")
         |> put_session(:current_user, user)
-        |> redirect(to: Routes.team_path(conn, :index))
+        |> redirect(to: path)
 
       {:error, changeset} ->
         conn
-        |> render(:new, user: changeset)
+        |> render(:new, user: changeset, path: path)
     end
   end
 
@@ -61,7 +61,7 @@ defmodule FollowThroughWeb.AuthController do
     end
   end
 
-  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
+  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, %{"state" => path}) do
     Credential
     |> Repo.get_by(uid: to_string(auth.uid), provider: to_string(auth.provider))
     |> Kernel.is_nil()
@@ -74,7 +74,8 @@ defmodule FollowThroughWeb.AuthController do
             Routes.auth_path(conn, :new,
               uid: auth.uid,
               name: auth.info.name,
-              image: auth.info.image
+              image: auth.info.image,
+              path: path
             )
         )
 
@@ -100,7 +101,7 @@ defmodule FollowThroughWeb.AuthController do
             conn
             |> put_flash(:error, "Failed to register. Please contact support.")
         end
-        |> redirect(to: Routes.team_path(conn, :index))
+        |> redirect(to: path)
     end
   end
 end

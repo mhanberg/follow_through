@@ -11,8 +11,8 @@
     <div class="flex mt-8 justify-center">
       <div class="mt-8 ">
         <div class="flex flex-col items-end">
-          <%= sign_in_button(@conn, :google) %>
-          <%= sign_in_button(@conn, :github, "btn-primary text-white hover:text-white inline-flex items-center normal-case mt-4") %>
+          <%= sign_in_button(@conn, :google, path: @path) %>
+          <%= sign_in_button(@conn, :github, class: "btn-primary text-white hover:text-white inline-flex items-center normal-case mt-4", path: @path) %>
         </div>
       </div>
     </div>

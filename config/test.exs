@@ -28,3 +28,4 @@ config :follow_through, :test, true
 config :follow_through, :digest_supervisor, nil
 config :follow_through, :http, FollowThrough.HttpMock
 config :follow_through, :slack, FollowThrough.SlackClientMock
+config :follow_through, :time, FollowThrough.TimeMock
